@@ -1,7 +1,13 @@
-# 🚀 Celaster CLI
+<p align="center">
+  
+<img width="200" height="400" alt="logoipsum-392" src="https://github.com/user-attachments/assets/4eeccf63-ff8f-4849-a579-e2f912204a78" />
+</p>
+<h1 align="center">
+Celaster CLI
+</h1>
 
-A simple and powerful **CLI tool** to quickly scaffold a full-stack **MERN app** (MongoDB, Express, React, Node.js).  
-Create your project in seconds with all boilerplate code already set up.
+Celaster CLI Scaffold a full-stack MERN app in seconds.
+**No setup ,No Sh*t** — just run one command and start building.
 
 ---
 
@@ -10,7 +16,7 @@ Create your project in seconds with all boilerplate code already set up.
 - Pre-configured **client (React + Vite)** and **server (Express + MongoDB)**
 - Comes with ESLint, sample components, and API setup
 - Installs dependencies automatically
-- Made with simplicity in mind ❤️
+- Made with simplicity in mind by **Joe Celaster** ❤️ 
 
 ---
 
