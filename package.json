@@ -1,6 +1,6 @@
 {
   "name": "celaster",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "CLI to create MERN apps quickly",
   "type": "module",
   "main": "index.js",
@@ -26,5 +26,11 @@
     "child_process": "^1.0.2",
     "fs-extra": "^11.3.1",
     "inquirer": "^12.9.4"
-  }
+  },
+  "scripts": {
+  "release:patch": "npm version patch && npm publish --access public",
+  "release:minor": "npm version minor && npm publish --access public",
+  "release:major": "npm version major && npm publish --access public"
+}
+
 }
