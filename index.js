@@ -46,5 +46,5 @@ console.log(chalk.blue("-----------------------------------------------------"))
 console.log(chalk.yellow(`👉 cd ${projectName}/client && npm run dev`));
 console.log(chalk.yellow(`👉 cd ${projectName}/server && npm start`));
 console.log(chalk.blue("-----------------------------------------------------"));
-console.log(chalk.white("✨ Made with ❤️ by Joe Celaster ✨"));
+console.log(chalk.white("✨ Made with ❤️  by Joe Celaster ✨"));
 console.log(chalk.blue("-----------------------------------------------------"));
