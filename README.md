@@ -28,4 +28,10 @@ You don’t need to install it globally. Just use `npx`:
 npx celaster my-app
 ```
 
+## Demo Video
+
+https://github.com/user-attachments/assets/4bda39e0-6f64-44a8-b51c-4f46a53221bf  
+
+<img width="480" height="383" alt="Screenshot from 2025-08-25 13-34-57" src="https://github.com/user-attachments/assets/d2088744-adfc-41b4-bb68-1708f28b872f" />
+
 ## No setup, No Sh*t.
