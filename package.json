@@ -1,6 +1,6 @@
 {
   "name": "celaster",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CLI to create MERN apps quickly",
   "type": "module",
   "main": "index.js",
