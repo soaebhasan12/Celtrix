@@ -14,7 +14,7 @@ const projectName = process.argv[2];
 
 if (!projectName) {
   console.log(chalk.red("❌ Please provide a project name:"));
-  console.log(chalk.green("👉 Example: npx celaster myapp"));
+  console.log(chalk.green("👉 Example: npx celtrix myapp"));
   process.exit(1);
 }
 

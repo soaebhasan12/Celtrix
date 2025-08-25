@@ -3,10 +3,10 @@
 <img width="200" height="400" alt="logoipsum-392" src="https://github.com/user-attachments/assets/4eeccf63-ff8f-4849-a579-e2f912204a78" />
 </p>
 <h1 align="center">
-Celaster CLI
+Celtrix CLI
 </h1>
 
-Celaster CLI Scaffold a full-stack MERN app in seconds.
+Celtrix CLI Scaffold a full-stack MERN app in seconds.
 **No setup ,No Sh*t** — just run one command and start building.
 
 ---
@@ -25,7 +25,7 @@ Celaster CLI Scaffold a full-stack MERN app in seconds.
 You don’t need to install it globally. Just use `npx`:
 
 ```bash
-npx celaster my-app
+npx celtrix my-app
 ```
 
 ## Demo Video

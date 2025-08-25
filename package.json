@@ -1,11 +1,11 @@
 {
-  "name": "celaster",
+  "name": "celtrix",
   "version": "1.0.5",
   "description": "CLI to create MERN apps quickly",
   "type": "module",
   "main": "index.js",
   "bin": {
-    "celaster": "index.js"
+    "celtrix": "index.js"
   },
   "files": [
     "index.js",
