@@ -9,6 +9,8 @@ Celtrix CLI
 Celtrix CLI Scaffold a full-stack MERN app in seconds.
 **No setup ,No Sh*t** — just run one command and start building.
 
+**npm Link: https://www.npmjs.com/package/celtrix**
+
 ---
 
 ## ✨ Features
