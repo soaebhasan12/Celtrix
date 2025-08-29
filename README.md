@@ -20,6 +20,8 @@ Celtrix CLI Scaffold a full-stack MERN app in seconds.
 - Installs dependencies automatically
 - Made with simplicity in mind by **Joe Celaster** ❤️ 
 
+⚠️ Note: Currently it supports only MERN stack, working to make it as an Universal scaffolder that supports all frameworks and stacks
+
 ---
 
 ## 📦 Installation
