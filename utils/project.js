@@ -41,7 +41,7 @@ ${chalk.bold("💻 Language:")}  ${chalk.magenta(config.language)}
 
   // --- Success + Next Steps ---
   console.log(chalk.gray("-------------------------------------------"))
-  console.log(`${chalk.greenBright(`✅ Project ${projectName} created successfully! 🎉`)}`);
+  console.log(`${chalk.greenBright(`✅ Project ${chalk.bold.yellow(`${projectName}`)} created successfully! 🎉`)}`);
   console.log(chalk.gray("-------------------------------------------"))
   console.log(chalk.cyan("👉 Next Steps:\n"));
   console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("npm run dev")}`);
