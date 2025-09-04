@@ -5,6 +5,7 @@ import boxen from "boxen";
 import { logger } from "./logger.js";
 import { copyTemplates } from "./templateManager.js";
 import { installDependencies } from "./installer.js";
+import { angularSetup, angularTailwindSetup } from "./installer.js";
 
 export async function setupProject(projectName, config) {
   const projectPath = path.join(process.cwd(), projectName);
@@ -18,11 +19,10 @@ export async function setupProject(projectName, config) {
 
   // --- Pretty Project Config (Boxed) ---
   const configText = `
-${chalk.bold("🌐 Frontend:")}  ${chalk.green(config.framework)}
-${chalk.bold("⚙️  Backend: ")}  ${chalk.blue(config.backend)}
-${chalk.bold("🗄️  Database:")}  ${chalk.yellow(config.database)}
-${chalk.bold("💻 Language:")}  ${chalk.magenta(config.language)}
-`;
+    ${chalk.bold("🌐 Stack:")}  ${chalk.green(config.stack)}
+    ${chalk.bold("📦 Project Name:")}  ${chalk.blue(projectName)}
+    ${chalk.bold("📖 Language:")}  ${chalk.red(config.language)}
+    `;
 
   console.log(
     boxen(configText, {
@@ -36,16 +36,37 @@ ${chalk.bold("💻 Language:")}  ${chalk.magenta(config.language)}
   );
 
   // --- Copy & Install ---
-  copyTemplates(projectPath, config);
-  installDependencies(projectPath);
+  if(config.stack !== "mean" && config.stack !== "mean+tailwind+auth"){
+    copyTemplates(projectPath, config);
+    installDependencies(projectPath, config, projectName);
+  }
+
+  if(config.stack === "mean"){
+    angularSetup(projectPath, config);
+    installDependencies(projectPath, config, projectName);
+    copyTemplates(projectPath, config);
+  }
+
+  if(config.stack === "mean+tailwind+auth"){
+    angularTailwindSetup(projectPath, config, projectName);
+    installDependencies(projectPath, config, projectName);
+    copyTemplates(projectPath, config);
+  }
 
   // --- Success + Next Steps ---
   console.log(chalk.gray("-------------------------------------------"))
   console.log(`${chalk.greenBright(`✅ Project ${chalk.bold.yellow(`${projectName}`)} created successfully! 🎉`)}`);
   console.log(chalk.gray("-------------------------------------------"))
   console.log(chalk.cyan("👉 Next Steps:\n"));
-  console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("npm run dev")}`);
-  console.log(`   ${chalk.yellow("cd")} ${projectName}/server && ${chalk.green("npm start")}`);
+  
+  if(config.stack === "mean" || config.stack === "mean+tailwind+auth") {
+    console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("ng serve")}`);
+    console.log(`   ${chalk.yellow("cd")} ${projectName}/server && ${chalk.green("npm start")}`);
+  } else {
+    console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("npm run dev")}`);
+    console.log(`   ${chalk.yellow("cd")} ${projectName}/server && ${chalk.green("npm start")}`);
+  }
+  
   console.log(chalk.gray("-------------------------------------------"))
-  console.log(chalk.gray("\n✨ Made with ❤️  by Joe Celaster ✨\n"));
+  console.log(chalk.gray("\n✨ Made with ❤️  by Celtrix ✨\n"));
 }
