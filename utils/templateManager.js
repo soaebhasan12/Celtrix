@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 export function copyTemplates(projectPath, config) {
   const { stack } = config;
 
-  if(stack !== "mean" && stack !== "mean+tailwind+auth"){
+  if(stack !== "mean" && stack !== "mean+tailwind+auth" && stack !== "t3-stack"){
     const frontendTemplate = path.join(__dirname, "..", "templates", stack, config.language, "client");
     const backendTemplate = path.join(__dirname, "..", "templates", stack, config.language, "server");
 
@@ -27,5 +27,13 @@ export function copyTemplates(projectPath, config) {
     
     logger.info("📂 Copying template files...");
     fs.copySync(backendTemplate, serverPath);
+  }
+  if(stack === "t3-stack"){
+    const frontendTemplate = path.join(__dirname, "..", "templates", stack, "t3-app");
+
+    const clientPath = path.join(projectPath, "t3-app");
+
+    logger.info("📂 Copying template files...");
+    fs.copySync(frontendTemplate, clientPath);
   }
 }

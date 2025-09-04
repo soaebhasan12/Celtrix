@@ -53,6 +53,8 @@ export async function setupProject(projectName, config) {
     copyTemplates(projectPath, config);
   }
 
+  
+  
   // --- Success + Next Steps ---
   console.log(chalk.gray("-------------------------------------------"))
   console.log(`${chalk.greenBright(`✅ Project ${chalk.bold.yellow(`${projectName}`)} created successfully! 🎉`)}`);
@@ -62,6 +64,8 @@ export async function setupProject(projectName, config) {
   if(config.stack === "mean" || config.stack === "mean+tailwind+auth") {
     console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("ng serve")}`);
     console.log(`   ${chalk.yellow("cd")} ${projectName}/server && ${chalk.green("npm start")}`);
+  } else if(config.stack === "t3-stack") {
+    console.log(`   ${chalk.yellow("cd")} ${projectName}/t3-app && ${chalk.green("npm run dev")}`);
   } else {
     console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("npm run dev")}`);
     console.log(`   ${chalk.yellow("cd")} ${projectName}/server && ${chalk.green("npm start")}`);
