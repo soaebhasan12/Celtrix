@@ -1,25 +1,33 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
 const app = express();
-
-const mongoUri = process.env.MONGO_URI; 
+const mongoURI = process.env.MONGO_URI;
 const port = process.env.PORT || 5000;
 
-// Middleware to parse JSON
+// Middleware
 app.use(express.json());
+app.use(cors());
+app.use(helmet());
+app.use(morgan("dev"));
 
-// Connect to MongoDB and start server
+// Routes
+app.use("/api/auth", authRoutes);
+
 // Safe MongoDB connection for scaffold
-if (!mongoUri || mongoUri === "your_mongodb_uri_here") {
+if (!mongoURI || mongoURI === "your_mongodb_uri_here") {
   console.warn("⚠️  No Mongo URI provided. Skipping DB connection. You can set it in .env later.");
   app.listen(port, () => console.log(`Server running without DB on port ${port}`));
 } else {
   mongoose
-    .connect(mongoUri)
+    .connect(mongoURI)
     .then(() => {
       console.log("MongoDB connected");
       app.listen(port, () => console.log(`Server running on port ${port}`));

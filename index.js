@@ -19,61 +19,35 @@ function showBanner() {
 
 console.log("\n")
 
-async function askFrameworkQuestions() {
+async function askStackQuestions() {
   return await inquirer.prompt([
     {
       type: "list",
-      name: "framework",
-      message: "Choose your frontend framework:",
+      name: "stack",
+      message: "Choose your stack:",
       choices: [
-        new inquirer.Separator(chalk.gray("── Frontend ──")),
-        { name: chalk.bold.blue("React with Vite"), value: "react-vite" },
-        { name: chalk.bold.green("Vue.js"), value: "vue" },
-        { name: chalk.bold.red("Angular"), value: "angular" },
-        { name: chalk.bold.magenta("Svelte"), value: "svelte" },
+        { name: chalk.bold.blue("MERN") + " → MongoDB + Express + React + Node.js", value: "mern" },
+        { name: chalk.bold.green("MERN") + " + Tailwind + Auth", value: "mern+tailwind+auth" },
+        { name: chalk.bold.red("MEAN") + " → MongoDB + Express + Angular + Node.js", value: "mean" },
+        { name: chalk.bold.magenta("MEAN") + " + Tailwind + Auth", value: "mean+tailwind+auth" },
+        { name: chalk.bold.cyan("MEVN") + " → MongoDB + Express + Vue.js + Node.js", value: "mevn" },
+        { name: chalk.bold.yellow("MEVN") + " + Tailwind + Auth", value: "mevn+tailwind+auth" },
+        { name: chalk.bold.yellow("Next.js") + " + tRPC + Prisma + Tailwind + Auth", value: "t3-stack" },
+
       ],
       pageSize: 10,
-      default: "react-vite",
-    },
-    {
-      type: "list",
-      name: "backend",
-      message: "Choose your backend framework:",
-      choices: [
-        new inquirer.Separator(chalk.gray("── Backend ──")),
-        { name: chalk.bold.yellow("Express.js"), value: "express" },
-        { name: chalk.bold.gray("Fastify"), value: "fastify" },
-        { name: chalk.bold.green("Koa.js"), value: "koa" },
-        { name: chalk.bold.red("NestJS"), value: "nestjs" },
-      ],
-      pageSize: 10,
-      default: "express",
-    },
-    {
-      type: "list",
-      name: "database",
-      message: "Choose your database:",
-      choices: [
-        new inquirer.Separator(chalk.gray("── Databases ──")),
-        { name: chalk.bold.green("MongoDB"), value: "mongodb" },
-        { name: chalk.bold.blue("PostgreSQL"), value: "postgresql" },
-        { name: chalk.bold.rgb(255, 165, 0)("MySQL"), value: "mysql" },
-        { name: chalk.bold.gray("SQLite"), value: "sqlite" },
-      ],
-      pageSize: 10,
-      default: "mongodb",
+      default: "mern",
     },
     {
       type: "list",
       name: "language",
-      message: "Choose your language preference:",
+      message: "Choose your language:",
       choices: [
-        new inquirer.Separator(chalk.gray("── Languages ──")),
         { name: chalk.bold.yellow("JavaScript"), value: "javascript" },
         { name: chalk.bold.blue("TypeScript"), value: "typescript" },
       ],
       pageSize: 10,
-      default: "javascript",
+      default: "typescript",
     },
   ]);
 }
@@ -108,8 +82,9 @@ async function main() {
     if (!projectName) {
       projectName = await askProjectName();
     }
-    const frameworkAnswers = await askFrameworkQuestions();
-    config = { ...frameworkAnswers, projectName };
+    const stackAnswers = await askStackQuestions();
+    config = { ...stackAnswers, projectName };
+    
 
     console.log(chalk.yellow("\n🚀 Creating your project...\n"));
     await createProject(projectName, config);
