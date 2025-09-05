@@ -3,12 +3,13 @@
   "version": "2.0.0",
   "description": "CLI to create MERN apps quickly",
   "type": "module",
-  "main": "bin/celtrix.js",
+  "main": "./bin/celtrix.js",
   "bin": {
     "celtrix": "./bin/celtrix.js"
   },
   "files": [
     "bin/",
+    "index.js",
     "commands/",
     "utils/",
     "templates/"
