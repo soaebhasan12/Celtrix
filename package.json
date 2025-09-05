@@ -1,6 +1,6 @@
 {
   "name": "celtrix",
-  "version": "3.0.1",
+  "version": "2.0.0",
   "description": "CLI to create MERN apps quickly",
   "type": "module",
   "main": "./bin/celtrix.js",
