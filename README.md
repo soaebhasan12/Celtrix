@@ -73,7 +73,7 @@ We love contributions! Please feel free to:
 
 <div align="center">
   
-  **Made with ❤️ by [Joe Celaster](https://github.com/joecelaster)**
+  **Made with ❤️ by [Celtrix Team](https://github.com/celtrix-os)**
   
   ### ⭐ Star us on GitHub — it motivates us a lot!
   
