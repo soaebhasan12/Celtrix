@@ -1,8 +1,8 @@
 <div align="center">
-  <img width="200" height="400" alt="Celtrix Logo" src="https://github.com/user-attachments/assets/4eeccf63-ff8f-4849-a579-e2f912204a78" />
+  <img width="250" height="250" alt="Untitled design" src="https://github.com/user-attachments/assets/14739e9b-fecf-4cdd-afbb-4d18d30f1b0b" />
   
-  # 🚀 Celtrix
-  
+  # Celtrix
+
   **Setup web apps in seconds, not hours, with your preferred stack**
   
   [![npm version](https://img.shields.io/npm/v/celtrix.svg)](https://www.npmjs.com/package/celtrix)
