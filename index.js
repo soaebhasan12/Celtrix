@@ -33,6 +33,10 @@ async function askStackQuestions() {
         { name: chalk.bold.cyan("MEVN") + " → MongoDB + Express + Vue.js + Node.js", value: "mevn" },
         { name: chalk.bold.yellow("MEVN") + " + Tailwind + Auth", value: "mevn+tailwind+auth" },
         { name: chalk.bold.yellow("Next.js") + " + tRPC + Prisma + Tailwind + Auth", value: "t3-stack" },
+        { name: chalk.bold.green("Django") + " → Django + SQLite + REST API", value: "django" },
+        { name: chalk.bold.blue("Django") + " + React + REST API", value: "django+react" },
+        { name: chalk.bold.magenta("Django") + " + Vue.js + REST API", value: "django+vue" },
+        { name: chalk.bold.cyan("Django") + " + PostgreSQL + REST API", value: "django+postgres" },
 
       ],
       pageSize: 10,
