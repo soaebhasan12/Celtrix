@@ -19,6 +19,7 @@ function showBanner() {
 
 console.log("\n")
 
+// Update askStackQuestions function for django
 async function askStackQuestions() {
   return await inquirer.prompt([
     {
@@ -33,28 +34,42 @@ async function askStackQuestions() {
         { name: chalk.bold.cyan("MEVN") + " → MongoDB + Express + Vue.js + Node.js", value: "mevn" },
         { name: chalk.bold.yellow("MEVN") + " + Tailwind + Auth", value: "mevn+tailwind+auth" },
         { name: chalk.bold.yellow("Next.js") + " + tRPC + Prisma + Tailwind + Auth", value: "t3-stack" },
+        
+        // New Django Options
+        new inquirer.Separator(chalk.gray("─── Django Stacks ───")),
         { name: chalk.bold.green("Django") + " → Django + SQLite + REST API", value: "django" },
-        { name: chalk.bold.blue("Django") + " + React + REST API", value: "django+react" },
-        { name: chalk.bold.magenta("Django") + " + Vue.js + REST API", value: "django+vue" },
-        { name: chalk.bold.cyan("Django") + " + PostgreSQL + REST API", value: "django+postgres" },
-
+        { name: chalk.bold.blue("Django + React") + " → Django + React + REST API", value: "django+react" },
+        { name: chalk.bold.cyan("Django + Vue") + " → Django + Vue.js + REST API", value: "django+vue" },
+        { name: chalk.bold.magenta("Django + PostgreSQL") + " → Django + PostgreSQL + REST API", value: "django+postgres" },
       ],
-      pageSize: 10,
+      pageSize: 15,
       default: "mern",
     },
     {
       type: "list",
       name: "language",
       message: "Choose your language:",
-      choices: [
-        { name: chalk.bold.yellow("JavaScript"), value: "javascript" },
-        { name: chalk.bold.blue("TypeScript"), value: "typescript" },
-      ],
+      choices: (answers) => {
+        if (answers.stack.startsWith('django')) {
+          return [
+            { name: chalk.bold.yellow("Python") + " (Django Backend)", value: "python" },
+          ];
+        }
+        return [
+          { name: chalk.bold.yellow("JavaScript"), value: "javascript" },
+          { name: chalk.bold.blue("TypeScript"), value: "typescript" },
+        ];
+      },
+      when: (answers) => !answers.stack.startsWith('django'), // Skip language selection for Django
       pageSize: 10,
-      default: "typescript",
+      default: (answers) => answers.stack.startsWith('django') ? "python" : "typescript",
     },
   ]);
 }
+
+
+
+
 
 async function askProjectName() {
   const { projectName } = await inquirer.prompt([
