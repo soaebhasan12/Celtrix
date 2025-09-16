@@ -10,6 +10,29 @@ const __dirname = path.dirname(__filename);
 export function copyTemplates(projectPath, config) {
   const { stack } = config;
 
+    // Handle Django stacks
+  if (stack.startsWith('django')) {
+    const backendTemplate = path.join(__dirname, "..", "templates", stack, "server");
+    const serverPath = path.join(projectPath, "server");
+
+    logger.info("📂 Copying Django template files...");
+    
+    if (fs.existsSync(backendTemplate)) {
+      fs.copySync(backendTemplate, serverPath);
+    }
+
+    // Handle frontend for full-stack Django setups
+    if (stack === "django+react" || stack === "django+vue") {
+      const frontendTemplate = path.join(__dirname, "..", "templates", stack, "client");
+      const clientPath = path.join(projectPath, "client");
+      
+      if (fs.existsSync(frontendTemplate)) {
+        fs.copySync(frontendTemplate, clientPath);
+      }
+    }
+    return;
+  }
+
   if(stack !== "mean" && stack !== "mean+tailwind+auth" && stack !== "t3-stack"){
     const frontendTemplate = path.join(__dirname, "..", "templates", stack, config.language, "client");
     const backendTemplate = path.join(__dirname, "..", "templates", stack, config.language, "server");
