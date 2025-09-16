@@ -94,3 +94,76 @@ export function angularTailwindSetup(projectPath, config, projectName) {
     throw error;
   }
 }
+
+
+// functions to handle Django project creation:
+export function djangoSetup(projectPath, config, projectName) {
+  logger.info("🐍 Setting up Django...");
+
+  try {
+    const serverDir = path.join(projectPath, "server");
+    
+    // Create virtual environment
+    execSync(`python -m venv venv`, {
+      cwd: projectPath,
+      stdio: "inherit",
+      shell: true,
+    });
+
+    // Activate venv and install Django
+    const activateCmd = process.platform === "win32" 
+      ? `venv\\Scripts\\activate && pip install django djangorestframework python-decouple`
+      : `source venv/bin/activate && pip install django djangorestframework python-decouple`;
+
+    execSync(activateCmd, {
+      cwd: projectPath,
+      stdio: "inherit",
+      shell: true,
+    });
+
+    // Create Django project
+    const createProjectCmd = process.platform === "win32"
+      ? `venv\\Scripts\\activate && django-admin startproject server .`
+      : `source venv/bin/activate && django-admin startproject server .`;
+
+    execSync(createProjectCmd, {
+      cwd: serverDir,
+      stdio: "inherit",
+      shell: true,
+    });
+
+    logger.info("✅ Django project created successfully!");
+  } catch (error) {
+    logger.error("❌ Failed to set up Django");
+    throw error;
+  }
+}
+
+export function djangoReactSetup(projectPath, config, projectName) {
+  logger.info("🐍⚛️ Setting up Django + React...");
+
+  try {
+    // First setup Django
+    djangoSetup(projectPath, config, projectName);
+
+    // Then setup React client
+    const clientDir = path.join(projectPath, "client");
+    execSync(`npx create-react-app client`, {
+      cwd: projectPath,
+      stdio: "inherit",
+      shell: true,
+    });
+
+    // Install additional packages for React
+    execSync(`npm install axios`, {
+      cwd: clientDir,
+      stdio: "inherit",
+      shell: true,
+    });
+
+    logger.info("✅ Django + React setup completed!");
+  } catch (error) {
+    logger.error("❌ Failed to set up Django + React");
+    throw error;
+  }
+}
