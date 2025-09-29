@@ -70,6 +70,20 @@ We love contributions! Please feel free to:
 - ⭐ Star this repository
 
 ---
+## 👥 Contributors
+
+Thanks goes to these wonderful people:  
+
+<br/>
+
+<div align="center">
+  <a href="https://github.com/celtrix-os/celtrix/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=celtrix-os/celtrix" />
+  </a>
+</div>
+
+<br/>
+
 
 <div align="center">
   
