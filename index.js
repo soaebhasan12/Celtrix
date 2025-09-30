@@ -34,6 +34,10 @@ async function askStackQuestions() {
         { name: chalk.bold.yellow("MEVN") + " + Tailwind + Auth", value: "mevn+tailwind+auth" },
         { name: chalk.bold.yellow("Next.js") + " + tRPC + Prisma + Tailwind + Auth", value: "t3-stack" },
 
+        // new inquirer.Separator(chalk.gray("─── Django Stacks ───")),
+        { name: chalk.bold.magenta("Django + React") + " → PostgreSQL + DRF + React + JWT", value: "django-react" },
+        // { name: chalk.bold.cyan("Django + Vue") + " → PostgreSQL + DRF + Vue + JWT", value: "django-vue" },
+        // { name: chalk.bold.green("Django + Angular") + " → PostgreSQL + DRF + Angular + JWT", value: "django-angular" },
       ],
       pageSize: 10,
       default: "mern",
@@ -45,6 +49,7 @@ async function askStackQuestions() {
       choices: [
         { name: chalk.bold.yellow("JavaScript"), value: "javascript" },
         { name: chalk.bold.blue("TypeScript"), value: "typescript" },
+        { name: chalk.bold.red("Python"), value: "python" },
       ],
       pageSize: 10,
       default: "typescript",
