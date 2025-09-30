@@ -23,14 +23,21 @@ This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md). By participatin
 
 ## How to Contribute
 
-### Reporting Bugs
+### Reporting Bugs or Issues
 
-- Search [issues](https://github.com/gunjanghate/Celtrix/issues) to see if your bug is already reported.
-- If not, open a new issue and provide:
-  - A clear, descriptive title
-  - Steps to reproduce
-  - Expected and actual behavior
-  - Screenshots or logs if possible
+- Search [issues](https://github.com/gunjanghate/Celtrix/issues) to see if your bug or suggestion is already reported.
+- If not, open a new issue and **follow this structure for better understanding:**
+  - **Title:** Clear and descriptive
+  - **Description:**
+    - What is the problem or suggestion?
+    - Steps to reproduce (for bugs)
+    - Expected behavior
+    - Actual behavior
+    - Environment (OS, Node version, etc.)
+  - **Screenshots or logs:** Attach if possible (for UI/CLI issues)
+  - **Additional context:** Any other information that helps
+
+Following this structure helps maintainers and contributors understand and resolve your issue faster.
 
 ### Suggesting Enhancements
 
@@ -42,16 +49,29 @@ This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md). By participatin
 
 ### Submitting Pull Requests
 
+#### Rules for Raising Pull Requests (PRs)
+
 1. **Fork** the repository and clone your fork.
 2. **Create a new branch** for your feature or fix:
-   ```sh
-   git checkout -b feature/your-feature-name
-   ```
+
+```sh
+git checkout -b feature/your-feature-name
+```
+
 3. **Make your changes** and commit them with clear messages.
 4. **Test** your changes locally.
 5. **Push** to your fork and open a Pull Request (PR) against the `main` branch.
-6. Fill out the PR template and describe your changes.
+6. **Fill out the PR template and follow these rules:**
+
+- **Add screenshots or videos** (optional but encouraged) to demonstrate UI/CLI changes or bug fixes.
+- **Provide a clear description** of what your PR does and how it solves the issue or adds value.
+- **Reference related issues** by number (e.g., `Closes #123`).
+- **Explain any breaking changes** or important details.
+- **Keep PRs focused** on a single feature or fix.
+
 7. Participate in the code review process and make requested changes.
+
+Following these rules helps reviewers understand your contribution and speeds up the merging process.
 
 ## Development Setup
 
