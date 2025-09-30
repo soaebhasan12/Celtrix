@@ -24,9 +24,9 @@ export async function runShellCommand(command, options = {}) {
   try {
     let finalCommand = command;
 
-    // Virtual environment activate karna hai?
+    // Virtual environment ke saath command run karna hai?
     if (venv) {
-      finalCommand = getVenvActivatedCommand(command, cwd);
+      finalCommand = getVenvCommand(command, cwd);
     }
 
     // Command execute karo
@@ -48,21 +48,45 @@ export async function runShellCommand(command, options = {}) {
   }
 }
 
+
 /**
- * Virtual environment ke saath command run karne ke liye
- * OS-specific activation command add karta hai
+ * Virtual environment ke Python/Pip directly use karo
+ * Activate karne ki zarurat nahi
  */
-function getVenvActivatedCommand(command, cwd) {
+function getVenvCommand(command, cwd) {
   const platform = os.platform();
   
   if (platform === 'win32') {
     // Windows
-    const venvPath = path.join(cwd, 'venv', 'Scripts', 'activate.bat');
-    return `${venvPath} && ${command}`;
+    const pythonPath = path.join(cwd, 'venv', 'Scripts', 'python.exe');
+    const pipPath = path.join(cwd, 'venv', 'Scripts', 'pip.exe');
+    
+    // Check if command starts with python or pip
+    if (command.startsWith('python ')) {
+      return `"${pythonPath}" ${command.substring(7)}`;
+    } else if (command.startsWith('pip ')) {
+      return `"${pipPath}" ${command.substring(4)}`;
+    } else if (command.startsWith('django-admin')) {
+      // Django-admin bhi venv ke andar hota hai
+      const djangoAdminPath = path.join(cwd, 'venv', 'Scripts', 'django-admin.exe');
+      return `"${djangoAdminPath}" ${command.substring(13)}`;
+    }
+    return command;
+    
   } else {
     // Linux/Mac
-    const venvPath = path.join(cwd, 'venv', 'bin', 'activate');
-    return `source ${venvPath} && ${command}`;
+    const pythonPath = path.join(cwd, 'venv', 'bin', 'python');
+    const pipPath = path.join(cwd, 'venv', 'bin', 'pip');
+    
+    if (command.startsWith('python ')) {
+      return `"${pythonPath}" ${command.substring(7)}`;
+    } else if (command.startsWith('pip ')) {
+      return `"${pipPath}" ${command.substring(4)}`;
+    } else if (command.startsWith('django-admin')) {
+      const djangoAdminPath = path.join(cwd, 'venv', 'bin', 'django-admin');
+      return `"${djangoAdminPath}" ${command.substring(13)}`;
+    }
+    return command;
   }
 }
 

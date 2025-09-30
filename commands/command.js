@@ -1,9 +1,12 @@
 import path from "path";
 import fs from "fs-extra";
+import inquirer from "inquirer"; // ADD THIS IMPORT
 import { logger } from "../utils/logger.js";
 import { runShellCommand } from "./runners/shellRunner.js";
 import { validateEnvironment } from "../utils/validation.js";
+import fileModifier from '../utils/fileModifier.js';
 import { getDjangoReactStack } from "./stacks/django-react.js";
+import envGenerator from '../utils/envGenerator.js';
 
 /**
  * Main command executor
@@ -17,33 +20,57 @@ export async function executeStackSetup(projectName, config) {
     logger.info("🔍 Checking prerequisites...");
     await validateEnvironment(config);
 
-    // 2. Get stack configuration
+    // 2. Get language selection
+    const { language } = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'language',
+        message: 'Choose your frontend language:',
+        choices: [
+          { name: 'JavaScript', value: 'javascript' },
+          { name: 'TypeScript', value: 'typescript' },
+          { name: 'Python (with JS frontend + Python dev tools)', value: 'python' }
+        ],
+        default: 'javascript'
+      }
+    ]);
+
+    // Add language to config
+    config.language = language;
+
+    // 3. Get stack configuration
     const stackConfig = getStackConfiguration(config.stack);
     if (!stackConfig) {
       throw new Error(`Stack ${config.stack} is not configured for command-based setup yet.`);
     }
 
-    // 3. Create project directory
+    // 4. Create project directory
     logger.info(`📁 Creating project directory: ${projectName}`);
     if (fs.existsSync(projectPath)) {
       throw new Error(`Directory ${projectName} already exists!`);
     }
     fs.mkdirSync(projectPath);
 
-    // 4. Execute setup commands
+    // 5. Execute setup commands (backend)
     logger.info("🚀 Setting up project structure...");
     await executeStackCommands(projectPath, stackConfig, config);
 
-    // 5. Modify configuration files
+    // 6. Setup frontend based on language
+    logger.info(`🔄 Setting up ${language} frontend...`);
+    if (stackConfig.setupFrontend) {
+      await stackConfig.setupFrontend(projectPath, language);
+    }
+
+    // 7. Modify configuration files
     logger.info("⚙️  Configuring project files...");
     await modifyProjectFiles(projectPath, stackConfig, config);
 
-    // 6. Generate environment files
+    // 8. Generate environment files
     logger.info("📝 Generating environment files...");
     await generateEnvironmentFiles(projectPath, stackConfig, config);
 
     logger.success(`\n✅ Project ${projectName} created successfully! 🎉\n`);
-    displayNextSteps(projectName, stackConfig);
+    displayNextSteps(projectName, stackConfig, language);
 
   } catch (error) {
     logger.error(`❌ Setup failed: ${error.message}`);
@@ -117,8 +144,6 @@ async function executeStackCommands(projectPath, stackConfig, config) {
 async function modifyProjectFiles(projectPath, stackConfig, config) {
   if (!stackConfig.fileModifications) return;
 
-  const fileModifier = await import("../utils/fileModifier.js");
-  
   for (const modification of stackConfig.fileModifications) {
     await modification.modify(projectPath, config, fileModifier);
   }
@@ -130,17 +155,21 @@ async function modifyProjectFiles(projectPath, stackConfig, config) {
 async function generateEnvironmentFiles(projectPath, stackConfig, config) {
   if (!stackConfig.envGenerator) return;
 
-  const envGenerator = await import("../utils/envGenerator.js");
   await stackConfig.envGenerator(projectPath, config, envGenerator);
 }
 
 /**
  * Display next steps for user
  */
-function displayNextSteps(projectName, stackConfig) {
+function displayNextSteps(projectName, stackConfig, language) {
   console.log("👉 Next Steps:\n");
   
-  if (stackConfig.nextSteps) {
+  if (stackConfig.getNextSteps) {
+    const steps = stackConfig.getNextSteps(projectName, language);
+    steps.forEach(step => {
+      console.log(`   ${step}`);
+    });
+  } else if (stackConfig.nextSteps) {
     stackConfig.nextSteps.forEach(step => {
       console.log(`   ${step}`);
     });
