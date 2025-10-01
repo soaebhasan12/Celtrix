@@ -1,6 +1,6 @@
 <div style="text-align: center">
   <p align="center">
-<img width="550" height="200" alt="image" src="https://github.com/user-attachments/assets/908c5486-a21f-4fb2-bfba-e64892d7a9c0" />
+<img width="500" height="200" alt="Celtrix" src="https://github.com/user-attachments/assets/96981ed5-1788-4262-8d82-6de0afc90dfe" />
     <br><br>
     <i>Setup web apps in seconds, not hours, with your preferred stack.</i>
   </p>
