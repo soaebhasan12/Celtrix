@@ -50,6 +50,19 @@ That's it! Follow the interactive prompts to customize your project.
 
 ---
 
+## ❓ Frequently Asked Questions (FAQ)
+
+**Q1: What makes Celtrix different from other tools?**  
+A1: Celtrix simplifies project setup with multiple popular stacks, ready-to-use templates, and modern best practices. It helps users start projects quickly and efficiently.  
+
+**Q2: How can I contribute a new stack?**  
+A2: You can add a new template under the `templates/` folder following the existing structure. Test your template with the CLI before submitting a Pull Request.  
+
+**Q3: Are the generated projects production-ready?**  
+A3: The generated projects provide a solid starting point for development. Some additional configuration may be needed for production use depending on your project requirements.
+
+---
+
 ## 📦 What You Get
 
 - **Production-ready** project structure
@@ -80,3 +93,4 @@ Check out [CONTRIBUTING](https://github.com/celtrix-os/Celtrix/blob/main/CONTRIB
 <h3>⭐ Star us on GitHub — it motivates us a lot!</h3>
 
 </div>
+
