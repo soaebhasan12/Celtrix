@@ -4,7 +4,7 @@ import chalk from "chalk";
 import boxen from "boxen";
 import { logger } from "./logger.js";
 import { copyTemplates } from "./templateManager.js";
-import { HonoReactSetup, installDependencies } from "./installer.js";
+import { HonoReactSetup, installDependencies, mernSetup } from "./installer.js";
 import { angularSetup, angularTailwindSetup } from "./installer.js";
 
 export async function setupProject(projectName, config) {
@@ -64,8 +64,12 @@ export async function setupProject(projectName, config) {
     }
   }
 
+  if (config.stack ==="mern") {
+    mernSetup(projectPath,config,projectName);
+    copyTemplates(projectPath, config);
+    installDependencies(projectPath, config, projectName,false,[])
+  }
 
-  
   // --- Success + Next Steps ---
   console.log(chalk.gray("-------------------------------------------"))
   console.log(`${chalk.greenBright(`✅ Project ${chalk.bold.yellow(`${projectName}`)} created successfully! 🎉`)}`);

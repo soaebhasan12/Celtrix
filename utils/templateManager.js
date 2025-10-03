@@ -10,25 +10,34 @@ const __dirname = path.dirname(__filename);
 export function copyTemplates(projectPath, config) {
   const { stack } = config;
 
-  if(stack !== "mean" && stack !== "mean+tailwind+auth" && stack !== "t3-stack"){
-    const frontendTemplate = path.join(__dirname, "..", "templates", stack, config.language, "client");
-    const backendTemplate = path.join(__dirname, "..", "templates", stack, config.language, "server");
-
-    const clientPath = path.join(projectPath, "client");
+  if(stack === "mern"){
+    const backendTemplate = path.join(__dirname, "..","templates","mern","server")
     const serverPath = path.join(projectPath, "server");
-
-    logger.info("📂 Copying template files...");
-    fs.copySync(frontendTemplate, clientPath);
+    
+    logger.info("📂 Copying backend template files...");
     fs.copySync(backendTemplate, serverPath);
   }
-  if(stack === "mean" || stack === "mean+tailwind+auth"){
+
+  // if(stack !== "mean" && stack !== "mean+tailwind+auth" && stack !== "t3-stack"){
+  //   const frontendTemplate = path.join(__dirname, "..", "templates", stack, config.language, "client");
+  //   const backendTemplate = path.join(__dirname, "..", "templates", stack, config.language, "server");
+
+  //   const clientPath = path.join(projectPath, "client");
+  //   const serverPath = path.join(projectPath, "server");
+
+  //   logger.info("📂 Copying template files...");
+  //   fs.copySync(frontendTemplate, clientPath);
+  //   fs.copySync(backendTemplate, serverPath);
+  // }
+  if(stack === "mean" || stack === "mean+tailwind+auth" ){
     const backendTemplate = path.join(__dirname, "..", "templates", stack, "server")
     const serverPath = path.join(projectPath, "server");
     
     logger.info("📂 Copying template files...");
     fs.copySync(backendTemplate, serverPath);
   }
-  if(stack === "t3-stack"){
+
+  if(stack === "t3-stack" ){
     const frontendTemplate = path.join(__dirname, "..", "templates", stack, "t3-app");
 
     const clientPath = path.join(projectPath, "t3-app");
