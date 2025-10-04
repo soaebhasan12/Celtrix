@@ -291,6 +291,7 @@ async function run() {
       commentBody += `  Link: https://github.com/${OWNER}/${REPO}/issues/${topMatch.number}\n\n`;
       commentBody += `🔒 **This issue has been automatically closed as a duplicate.**\n\n`;
       commentBody += `Please continue the discussion in the original issue above. If your problem is different, please open a new issue with more specific details.\n\n`;
+      commentBody += `Join the discussion on [Discord](https://discord.gg/Qp6qUdxf)\n\n`
     }
 
     console.log(`🚨 HIGH SIMILARITY DUPLICATE detected! Similarity: ${similarityPercent}% with issue #${topMatch.number}`);
@@ -315,6 +316,7 @@ async function run() {
     commentBody += `- Issue #${topMatch.number}: "${topMatch.title}" (${similarityPercent}% similar)\n`;
     commentBody += `  Link: https://github.com/${OWNER}/${REPO}/issues/${topMatch.number}\n\n`;
     commentBody += `This issue is not identical but may be related. A maintainer will review to determine if they should be linked or if this is indeed a separate issue.\n\n`;
+    commentBody += `Join the discussion on [Discord](https://discord.gg/Qp6qUdxf)\n\n`
     
     console.log(`🤔 POTENTIALLY RELATED issue detected! Similarity: ${similarityPercent}% with issue #${topMatch.number}`);
     
