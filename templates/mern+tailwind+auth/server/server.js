@@ -21,6 +21,7 @@ app.use(morgan("dev"));
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.get('/',(req,res)=>res.status(200).json({message:"Server running"}))
 
 // Safe MongoDB connection for scaffold
 if (!mongoURI || mongoURI === "your_mongodb_uri_here") {
