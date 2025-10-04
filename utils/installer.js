@@ -249,12 +249,79 @@ export function mernSetup(projectPath, config, projectName) {
         
     }
 
-    execSync(`npm init -y`, { cwd: path.join(projectPath, "server") });
-    installDependencies(projectPath,config,projectName,true,["dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
-
+    serverSetup(projectPath,config,projectName);
     logger.info("✅ MERN project created successfully!");
   } catch (error) {
     logger.error("❌ Failed to set up MERN");
     throw error;
+  }
+}
+
+export function serverSetup(projectPath,config,projectName){
+  try{
+    execSync(`npm init -y`, { cwd: path.join(projectPath, "server") });
+    installDependencies(projectPath,config,projectName,true,["dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
+    logger.info("✅ Server project created successfully!");
+  }catch(error){
+    logger.error("❌ Failed to set up server");
+    throw error;
+  }
+}
+
+export function serverAuthSetup(projectPath,config,projectName){
+  try {
+    execSync(`npm init -y`, { cwd: path.join(projectPath, "server") });
+    installDependencies(projectPath,config,projectName,true,["bcrypt","jsonwebtoken","cookie-parser","dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
+    logger.info("✅ Server Auth project created successfully!");
+  } catch (error) {
+    logger.error("❌ Failed to set up server auth");
+    throw error;
+  }
+}
+
+export function mernTailwindSetup(projectPath, config, projectName) {
+  try {
+    execSync(`npm install tailwindcss @tailwindcss/vite`, { cwd: path.join(projectPath, "client") });
+
+    let isJs = config.language === 'javascript';
+    const viteConfigPath = isJs 
+      ? path.join(projectPath, "client", "vite.config.js") 
+      : path.join(projectPath, "client", "vite.config.ts");
+    
+    let viteConfigContent = fs.readFileSync(viteConfigPath, "utf-8");
+
+    const indexCssPath = path.join(projectPath,"client","src","index.css")
+    let indexCssPathContent = fs.readFileSync(indexCssPath, "utf-8");
+
+    indexCssPathContent = indexCssPathContent.replace(
+      /:root/g,
+      "@import 'tailwindcss';\n\n:root"
+    );
+    
+
+    fs.writeFileSync(indexCssPath,indexCssPathContent)
+
+    // Add tailwindcss import
+    viteConfigContent = viteConfigContent.replace(
+      /import \{ defineConfig \} from 'vite'/,
+      "import { defineConfig } from 'vite'\nimport tailwindcss from '@tailwindcss/vite'"
+    );
+
+    // Add tailwindcss() to plugins
+    viteConfigContent = viteConfigContent.replace(
+      /plugins:\s*\[([^\]]*)\]/,
+      (match, pluginsInside) => {
+        if (!pluginsInside.includes("tailwindcss()")) {
+          return `plugins: [${pluginsInside.trim()} , tailwindcss()]`;
+        }
+        return match; // avoid duplicate insert
+      }
+    );
+
+    fs.writeFileSync(viteConfigPath, viteConfigContent);
+
+    console.log("✅ TailwindCSS added to Vite config");
+  } catch (err) {
+    console.error("❌ Failed to setup Tailwind:", err.message);
   }
 }

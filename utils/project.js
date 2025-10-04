@@ -4,7 +4,7 @@ import chalk from "chalk";
 import boxen from "boxen";
 import { logger } from "./logger.js";
 import { copyTemplates } from "./templateManager.js";
-import { HonoReactSetup, installDependencies, mernSetup } from "./installer.js";
+import { HonoReactSetup,mernTailwindSetup, installDependencies, mernSetup, serverAuthSetup, serverSetup } from "./installer.js";
 import { angularSetup, angularTailwindSetup } from "./installer.js";
 
 export async function setupProject(projectName, config) {
@@ -41,10 +41,19 @@ export async function setupProject(projectName, config) {
     installDependencies(projectPath, config, projectName);
   }
 
+  if(config.stack==="mern+tailwind+auth"){
+    mernSetup(projectPath,config,projectName);
+    copyTemplates(projectPath, config);
+    mernTailwindSetup(projectPath, config, projectName);
+    installDependencies(projectPath, config, projectName);
+    serverAuthSetup(projectPath,config,projectName);
+  }
+
   if(config.stack === "mean"){
     angularSetup(projectPath, config);
     installDependencies(projectPath, config, projectName);
     copyTemplates(projectPath, config);
+    serverSetup(projectPath,config,projectName)
   }
   
   if(config.stack === "mean+tailwind+auth"){
@@ -77,7 +86,7 @@ export async function setupProject(projectName, config) {
   console.log(chalk.cyan("👉 Next Steps:\n"));
   
   if(config.stack === "mean" || config.stack === "mean+tailwind+auth") {
-    console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("ng serve")}`);
+    console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("npm start")}`);
     console.log(`   ${chalk.yellow("cd")} ${projectName}/server && ${chalk.green("npm start")}`);
   } else if(config.stack === "t3-stack") {
     console.log(`   ${chalk.yellow("cd")} ${projectName}/t3-app && ${chalk.green("npm run dev")}`);

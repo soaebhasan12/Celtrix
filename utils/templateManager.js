@@ -18,6 +18,14 @@ export function copyTemplates(projectPath, config) {
     fs.copySync(backendTemplate, serverPath);
   }
 
+  else if(stack === 'mern+tailwind+auth'){
+    const backendTemplate = path.join(__dirname,"..","templates","mern+tailwind+auth","server");
+    const serverPath = path.join(projectPath, "server");
+    
+    logger.info("📂 Copying backend template files...");
+    fs.copySync(backendTemplate, serverPath);
+  }
+
   else if(stack !== "mean" && stack !== "mean+tailwind+auth" && stack !== "t3-stack"){
     const frontendTemplate = path.join(__dirname, "..", "templates", stack, config.language, "client");
     const backendTemplate = path.join(__dirname, "..", "templates", stack, config.language, "server");
