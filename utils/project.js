@@ -4,7 +4,7 @@ import chalk from "chalk";
 import boxen from "boxen";
 import { logger } from "./logger.js";
 import { copyTemplates } from "./templateManager.js";
-import { HonoReactSetup,mernTailwindSetup, installDependencies, mernSetup, serverAuthSetup, serverSetup } from "./installer.js";
+import { HonoReactSetup,mernTailwindSetup, installDependencies, mernSetup, serverAuthSetup, serverSetup, mevnSetup } from "./installer.js";
 import { angularSetup, angularTailwindSetup } from "./installer.js";
 
 export async function setupProject(projectName, config) {
@@ -47,6 +47,13 @@ export async function setupProject(projectName, config) {
     mernTailwindSetup(projectPath, config, projectName);
     installDependencies(projectPath, config, projectName);
     serverAuthSetup(projectPath,config,projectName);
+  }
+
+  if(config.stack === 'mevn'){
+    mevnSetup(projectPath,config,projectName)
+    copyTemplates(projectPath,config)
+    installDependencies(projectPath,config,projectName)
+    serverSetup(projectPath,config,projectName)
   }
 
   if(config.stack === "mean"){

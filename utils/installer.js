@@ -325,3 +325,91 @@ export function mernTailwindSetup(projectPath, config, projectName) {
     console.error("❌ Failed to setup Tailwind:", err.message);
   }
 }
+
+
+export function mevnSetup(projectPath,config,projectName){
+  try {
+    logger.info("⚡ Setting up MEVN...");
+    if(config.language=='javascript'){
+      execSync(`npm create vite@latest client -- --t vue --no-rolldown --no-interactive`, { cwd: projectPath, stdio: "inherit", shell: true });
+
+
+    }
+    else{
+      execSync(`npm create vite@latest client -- --t vue-ts --no-rolldown --no-interactive`, { cwd: projectPath, stdio: "inherit", shell: true });
+    }
+
+    
+    const vueJsPath = path.join(projectPath, "client", "src", "components", "HelloWorld.vue");
+  
+    let vueJsPathContent = fs.readFileSync(vueJsPath, "utf-8");
+  
+    vueJsPathContent = vueJsPathContent.replace(
+      /<p class="read-the-docs">Click on the Vite and Vue logos to learn more<\/p>/,
+      `<p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
+    <div class="powered-box">
+      Powered by <span class="powered-highlight">Celtrix</span>
+    </div>`
+    );
+  
+    fs.writeFileSync(vueJsPath, vueJsPathContent, "utf-8");
+
+    // Replace <p> with new block
+    vueJsPathContent = vueJsPathContent.replace(
+      /<p class="read-the-docs">Click on the Vite and Vue logos to learn more<\/p>/,
+      `<p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
+    <div class="powered-box">
+      Powered by <span class="powered-highlight">Celtrix</span>
+    </div>`
+    );
+
+    // Replace <style> block (or append if missing)
+    const newStyles = `<style scoped>
+    .powered-box {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      background-color: black;
+      color: white;
+      padding: 8px 16px;
+      font-size: 0.875rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      opacity: 0.85;
+      transition: opacity 0.2s ease;
+      cursor: default;
+    }
+
+    .powered-box:hover {
+      opacity: 1;
+    }
+
+    .powered-highlight {
+      font-weight: 600;
+      color: #22c55e;
+    }
+
+    .read-the-docs {
+      color: #888;
+    }
+    </style>`;
+
+    if (/<style scoped>[\s\S]*?<\/style>/.test(vueJsPathContent)) {
+      vueJsPathContent = vueJsPathContent.replace(
+        /<style scoped>[\s\S]*?<\/style>/,
+        newStyles
+      );
+    } else {
+      vueJsPathContent += `\n\n${newStyles}`;
+    }
+
+    fs.writeFileSync(vueJsPath, vueJsPathContent, "utf-8");
+    
+    // serverSetup(projectPath,config,projectName);
+    logger.info("✅ MEVN project created successfully!");
+
+  } catch (error) {
+    logger.error("❌ Failed to set up MEVN");
+    throw error;
+  }
+}
