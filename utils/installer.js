@@ -3,7 +3,7 @@ import { logger } from "./logger.js";
 import path from "path";
 import fs from "fs";
 
-export function installDependencies(projectPath, config, projectName,server=true) {
+export function installDependencies(projectPath, config, projectName,server=true,dependencies=[]) {
   logger.info("📦 Installing dependencies...");
 
   try {
@@ -19,7 +19,7 @@ export function installDependencies(projectPath, config, projectName,server=true
       execSync("npm install", { cwd: clientDir, stdio: "inherit", shell: true });
     }
     if (server && fs.existsSync(serverDir)) {
-      execSync("npm install", { cwd: serverDir, stdio: "inherit", shell: true });
+      execSync("npm install " + dependencies.join(" "), { cwd: serverDir, stdio: "inherit", shell: true });
     }
 
     logger.info("✅ Dependencies installed successfully");
@@ -126,6 +126,135 @@ export function HonoReactSetup(projectPath, config, projectName) {
     logger.info("Created Hono + React Project !");
   } catch (error) {
     logger.error("❌ Failed to set up Hono + react Project using cli");
+    throw error;
+  }
+}
+
+export function mernSetup(projectPath, config, projectName) {
+  logger.info("⚡ Setting up MERN...");
+
+  try {
+    // 1. Create MERN project
+    if(config.language==="typescript"){
+
+      execSync(`npm create vite@latest client -- --t react-ts --no-rolldown --no-interactive `, {
+        cwd: projectPath,
+        stdio: "inherit",
+        shell: true,
+      });
+    }else{
+      execSync(`npm create vite@latest client -- --t react --no-rolldown --no-interactive `, {
+        cwd: projectPath,
+        stdio: "inherit",
+        shell: true,
+      });
+
+    }
+
+    if(config.language == 'javascript'){
+
+      
+      const appJsxPath = path.join(projectPath, "client", "src", "App.jsx");
+      const appCssPath = path.join(projectPath,"client", "src", "index.css");
+      
+      let appJsx = fs.readFileSync(appJsxPath, "utf-8");
+      const lines = appJsx.split("\n");
+      
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].includes("</>")) {
+          // inject badge right after opening fragment
+          lines.splice(i, 0, `  <div className="powered-badge">Powered by <span className="celtrix">Celtrix</span></div>`);
+          break;
+        }
+      }
+      
+      fs.writeFileSync(appJsxPath, lines.join("\n"), "utf-8");
+      
+    // append the fu*king CSS
+    const badgeCSS = `
+    .powered-badge {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      font-size: 0.875rem;
+      background-color: black;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),
+      0 4px 6px -2px rgba(0,0,0,0.05);
+      opacity: 0.8;
+      transition: opacity 0.2s ease-in-out;
+      }
+      
+      .powered-badge:hover {
+      opacity: 1;
+      }
+      
+      .powered-badge .celtrix {
+        font-weight: 600;
+        color: #4ade80;
+        }
+        `;
+        
+        fs.appendFileSync(appCssPath, badgeCSS, "utf-8");
+        
+    }
+
+    if(config.language=="typescript"){
+      const appTsxPath = path.join(projectPath, "client", "src", "App.tsx");
+      const appCssPath = path.join(projectPath,"client", "src", "index.css");
+      
+      let appTsx = fs.readFileSync(appTsxPath, "utf-8");
+      const lines = appTsx.split("\n");
+      
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].includes("</>")) {
+          // inject badge right after opening fragment
+          lines.splice(i, 0, `  <div className="powered-badge">Powered by <span className="celtrix">Celtrix</span></div>`);
+          break;
+        }
+      }
+      
+      fs.writeFileSync(appTsxPath, lines.join("\n"), "utf-8");
+      
+    // append the fu*king CSS
+    const badgeCSS = `
+    .powered-badge {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      font-size: 0.875rem;
+      background-color: black;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),
+      0 4px 6px -2px rgba(0,0,0,0.05);
+      opacity: 0.8;
+      transition: opacity 0.2s ease-in-out;
+      }
+      
+      .powered-badge:hover {
+      opacity: 1;
+      }
+      
+      .powered-badge .celtrix {
+        font-weight: 600;
+        color: #4ade80;
+        }
+        `;
+        
+        fs.appendFileSync(appCssPath, badgeCSS, "utf-8");
+        
+    }
+
+    execSync(`npm init -y`, { cwd: path.join(projectPath, "server") });
+    installDependencies(projectPath,config,projectName,true,["dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
+
+    logger.info("✅ MERN project created successfully!");
+  } catch (error) {
+    logger.error("❌ Failed to set up MERN");
     throw error;
   }
 }
