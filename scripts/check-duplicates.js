@@ -329,7 +329,7 @@ async function run() {
       commentBody += `Your edit has been processed and the issue still appears to be unique. Our duplicate detection database has been updated with your changes.\n\n`;
       commentBody += `Thank you for keeping your issue up to date! 🔄\n\n`;
     } else {
-      commentBody += `Thank you for finding and contributing this unique issue! This appears to be a new problem that hasn't been reported before.\n\n`;
+      commentBody = `Thank you for finding and contributing this unique issue! This appears to be a new problem that hasn't been reported before.\n\n`;
       commentBody += `Your contribution helps make this project better. We appreciate you taking the time to report this! 🙏\n\n`;
       commentBody += `Join the discussion on [Discord](https://discord.gg/Qp6qUdxf)`
     }
