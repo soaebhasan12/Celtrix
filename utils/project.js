@@ -4,7 +4,7 @@ import chalk from "chalk";
 import boxen from "boxen";
 import { logger } from "./logger.js";
 import { copyTemplates } from "./templateManager.js";
-import { installDependencies } from "./installer.js";
+import { HonoReactSetup, installDependencies, mernSetup } from "./installer.js";
 import { angularSetup, angularTailwindSetup } from "./installer.js";
 
 export async function setupProject(projectName, config) {
@@ -36,7 +36,11 @@ export async function setupProject(projectName, config) {
   );
 
   // --- Copy & Install ---
+
   if(config.stack !== "mean" && config.stack !== "mean+tailwind+auth" && config.stack !== "react+tailwind+firebase"){
+
+  if(config.stack !== "mean" && config.stack !== "mean+tailwind+auth" && config.stack!=="hono"){
+
     copyTemplates(projectPath, config);
     installDependencies(projectPath, config, projectName);
   }
@@ -46,12 +50,13 @@ export async function setupProject(projectName, config) {
     installDependencies(projectPath, config, projectName);
     copyTemplates(projectPath, config);
   }
-
+  
   if(config.stack === "mean+tailwind+auth"){
     angularTailwindSetup(projectPath, config, projectName);
     installDependencies(projectPath, config, projectName);
     copyTemplates(projectPath, config);
   }
+
 
   if(config.stack === "react+tailwind+firebase"){
     copyTemplates(projectPath, config);
@@ -59,7 +64,23 @@ export async function setupProject(projectName, config) {
   }
 
   
-  
+  if(config.stack === "hono"){
+   try{
+
+     HonoReactSetup(projectPath,config,projectName);
+     installDependencies(projectPath, config, projectName,false);
+    }
+    catch{
+      copyTemplates(projectPath, config);
+    }
+  }
+
+  if (config.stack ==="mern") {
+    mernSetup(projectPath,config,projectName);
+    copyTemplates(projectPath, config);
+    installDependencies(projectPath, config, projectName,false,[])
+  }
+
   // --- Success + Next Steps ---
   console.log(chalk.gray("-------------------------------------------"))
   console.log(`${chalk.greenBright(`✅ Project ${chalk.bold.yellow(`${projectName}`)} created successfully! 🎉`)}`);
@@ -71,9 +92,14 @@ export async function setupProject(projectName, config) {
     console.log(`   ${chalk.yellow("cd")} ${projectName}/server && ${chalk.green("npm start")}`);
   } else if(config.stack === "t3-stack") {
     console.log(`   ${chalk.yellow("cd")} ${projectName}/t3-app && ${chalk.green("npm run dev")}`);
+
   } else if(config.stack === "react+tailwind+firebase") {
     console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("npm run dev")}`);
     console.log(`   ${chalk.gray("📝 Don't forget to configure your Firebase project in .env file!")}`);
+
+  }else if(config.stack==="hono"){
+    console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("npm run dev")}`);
+    console.log(`   ${chalk.yellow("cd")} ${projectName}/server && ${chalk.green("npm run dev")}`);
   } else {
     console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("npm run dev")}`);
     console.log(`   ${chalk.yellow("cd")} ${projectName}/server && ${chalk.green("npm start")}`);

@@ -34,6 +34,8 @@ async function askStackQuestions() {
         { name: chalk.bold.yellow("MEVN") + " + Tailwind + Auth", value: "mevn+tailwind+auth" },
         { name: chalk.bold.yellow("Next.js") + " + tRPC + Prisma + Tailwind + Auth", value: "t3-stack" },
         { name: chalk.bold.red("React") + " + Tailwind + Firebase", value: "react+tailwind+firebase" },
+        { name: chalk.bold.red("Hono") + " → Hono + Prisma + React", value: "hono" }
+
 
       ],
       pageSize: 10,
