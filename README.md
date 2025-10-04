@@ -60,6 +60,27 @@ That's it! Follow the interactive prompts to customize your project.
 
 ---
 
+## ⭐ Star History
+
+<div align="center">
+  <h3>📈 Watch our journey grow!</h3>
+  <p><em>See how our community has grown over time</em></p>
+  <br>
+  
+  <a href="https://star-history.com/#celtrix-os/Celtrix&Date">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=celtrix-os/Celtrix&type=Date&theme=dark" />
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=celtrix-os/Celtrix&type=Date&theme=light" />
+      <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=celtrix-os/Celtrix&type=Date&theme=light" width="600" />
+    </picture>
+  </a>
+  
+  <br>
+  <p><small>📊 <a href="https://star-history.com/#celtrix-os/Celtrix&Date">View interactive chart</a></small></p>
+</div>
+
+---
+
 ## 🤝 Contributing
 
 We love contributions! Please feel free to:
