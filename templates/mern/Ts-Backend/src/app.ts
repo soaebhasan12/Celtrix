@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import { env } from './constant/env.constant';
 import { UserRoutes } from './api/user/v1/user.routes';
 
-let app: Express = express();
+const app: Express = express();
 
 // Middleware
 app.use(helmet());

@@ -1,11 +1,19 @@
 import mongoose from 'mongoose';
 import { env } from '../constant/env.constant';
 
-const connectDB = async () => {
+const connectDB = async ()  => {
   try {
-    let conn = await mongoose.connect(env.DB_CONNECTION_STRING, {
+   const conn =  await mongoose.connect(env.DB_CONNECTION_STRING, {
       dbName: env.DB_NAME,
       autoIndex: env.NODE_ENV !== 'production',
     });
-  } catch (error) {}
+
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error('Database connection error:', error);
+    process.exit(1);
+  }
 };
+
+
+export default connectDB;

@@ -4,4 +4,3 @@ dotenv.config();
 
 export const env = EnvSchema.parse(process.env);
 
-console.log('env.constant.ts end', env);
