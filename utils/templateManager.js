@@ -62,4 +62,12 @@ export function copyTemplates(projectPath, config) {
     logger.info("📂 Copying template files...");
     fs.copySync(frontendTemplate, clientPath);
   }
+
+    else if(stack === "django"){
+    const backendTemplate = path.join(__dirname, "..", "templates", stack, "server");
+    const serverPath = path.join(projectPath, "server");
+    
+    logger.info("📂 Copying Django template files...");
+    fs.copySync(backendTemplate, serverPath);
+  }
 }

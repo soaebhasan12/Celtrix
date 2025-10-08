@@ -413,3 +413,39 @@ export function mevnSetup(projectPath,config,projectName){
     throw error;
   }
 }
+
+
+export function djangoSetup(projectPath, config, projectName) {
+  logger.info("🐍 Setting up Django...");
+
+  try {
+    const serverPath = path.join(projectPath, "server");
+
+    // Check Python installation
+    try {
+      execSync("python --version", { stdio: "pipe" });
+    } catch {
+      logger.error("❌ Python is not installed. Please install Python 3.8+");
+      throw new Error("Python not found");
+    }
+
+    logger.info("📦 Creating virtual environment...");
+    execSync("python -m venv venv", {
+      cwd: serverPath,
+      stdio: "inherit",
+      shell: true,
+    });
+
+    logger.info("✅ Django setup completed!");
+    logger.warn("⚠️  Next steps:");
+    logger.info(`   cd ${projectName}/server`);
+    logger.info("   venv\\Scripts\\activate  (Windows)");
+    logger.info("   source venv/bin/activate  (Mac/Linux)");
+    logger.info("   pip install -r requirements.txt");
+    logger.info("   python manage.py migrate");
+    logger.info("   python manage.py runserver");
+  } catch (error) {
+    logger.error("❌ Failed to set up Django");
+    throw error;
+  }
+}

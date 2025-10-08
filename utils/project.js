@@ -5,7 +5,7 @@ import boxen from "boxen";
 import { logger } from "./logger.js";
 import { copyTemplates } from "./templateManager.js";
 import { HonoReactSetup,mernTailwindSetup, installDependencies, mernSetup, serverAuthSetup, serverSetup, mevnSetup } from "./installer.js";
-import { angularSetup, angularTailwindSetup } from "./installer.js";
+import { angularSetup, angularTailwindSetup, djangoSetup } from "./installer.js";
 
 export async function setupProject(projectName, config) {
   const projectPath = path.join(process.cwd(), projectName);
@@ -86,6 +86,11 @@ export async function setupProject(projectName, config) {
     installDependencies(projectPath, config, projectName,false,[])
   }
 
+  if(config.stack === "django"){
+    djangoSetup(projectPath, config, projectName);
+    copyTemplates(projectPath, config);
+  }
+
   // --- Success + Next Steps ---
   console.log(chalk.gray("-------------------------------------------"))
   console.log(`${chalk.greenBright(`✅ Project ${chalk.bold.yellow(`${projectName}`)} created successfully! 🎉`)}`);
@@ -100,7 +105,15 @@ export async function setupProject(projectName, config) {
   }else if(config.stack==="hono"){
     console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("npm run dev")}`);
     console.log(`   ${chalk.yellow("cd")} ${projectName}/server && ${chalk.green("npm run dev")}`);
-  } else {
+  }else if(config.stack === "django") {
+    console.log(`   ${chalk.yellow("cd")} ${projectName}/server`);
+    console.log(`   ${chalk.green("venv\\Scripts\\activate")}  ${chalk.gray("(Windows)")}`);
+    console.log(`   ${chalk.green("source venv/bin/activate")}  ${chalk.gray("(Mac/Linux)")}`);
+    console.log(`   ${chalk.green("pip install -r requirements.txt")}`);
+    console.log(`   ${chalk.green("python manage.py migrate")}`);
+    console.log(`   ${chalk.green("python manage.py runserver")}`);
+  }
+  else {
     console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("npm run dev")}`);
     console.log(`   ${chalk.yellow("cd")} ${projectName}/server && ${chalk.green("npm start")}`);
   }
