@@ -13,23 +13,23 @@
   
 </div>
 
-# ✨ Features
+# Features
 
-### 🎯 **Multiple Stack Options**
+### **Multiple Stack Options**
 Choose from **7+ popular stacks** including MERN, MEAN, T3, Angular+Tailwind, and more!
 
 <div align="center">
-  <img width="250" height="250" alt="Celtrix Stack Selection Demo" src="https://github.com/user-attachments/assets/7b6a30be-1e34-443e-a906-8c167230c238" />
+  <img width="617" height="511" alt="cel-1" src="https://github.com/user-attachments/assets/5958e7b2-34b8-4821-839f-fa73b327af82" />
 </div>
 
-### 🌐 **Language Flexibility**
+### **Language Flexibility**
 Pick your preferred programming languages and frameworks to match your workflow.
 
 <div align="center">
-  <img width="250" height="250" alt="Celtrix Language Selection" src="https://github.com/user-attachments/assets/3f8c775a-b747-4eb1-a22d-c1f236276934" />
+<img width="674" height="478" alt="Screenshot 2025-10-09 154909" src="https://github.com/user-attachments/assets/ca760580-89af-462d-abd9-5a53e272f321" />
 </div>
 
-### 🛠️ **Ready-to-Go Setup**
+### **Ready-to-Go Setup**
 -  **ESLint** configuration included
 -  **Sample components** and boilerplate code
 -  **API setup** with best practices
@@ -38,7 +38,7 @@ Pick your preferred programming languages and frameworks to match your workflow.
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 No global installation needed! Get started instantly:
 
@@ -56,7 +56,7 @@ You can now find the full list of FAQs here: [FAQ.md](./FAQ.md)
 
 ---
 
-## 📦 What You Get
+## What You Get
 
 - **Production-ready** project structure
 - **Modern tooling** and best practices
@@ -87,7 +87,7 @@ You can now find the full list of FAQs here: [FAQ.md](./FAQ.md)
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We love contributions! Please feel free to:
 
@@ -99,7 +99,7 @@ We love contributions! Please feel free to:
 Check out [CONTRIBUTING](https://github.com/celtrix-os/Celtrix/blob/main/CONTRIBUTING.md) to see how to contribute to Celtrix.
 
 ---
-## 👥 Contributors
+## Our Contributors
 
 Thanks goes to these wonderful people:  
 
