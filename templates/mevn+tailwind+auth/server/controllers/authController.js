@@ -54,5 +54,5 @@ const login = async (req, res) => {
   }
 };
 
-// ✅ CommonJS export
+// Export (CommonJS style)
 module.exports = { register, login };

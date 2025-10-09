@@ -9,69 +9,70 @@ const __dirname = path.dirname(__filename);
 
 export function copyTemplates(projectPath, config) {
   const { stack } = config;
-
-
-  if(stack !== "mean" && stack !== "mean+tailwind+auth" && stack !== "t3-stack" && stack !== "react+tailwind+firebase"){
-
-  if(stack === "mern"){
-    const backendTemplate = path.join(__dirname, "..","templates","mern","server")
-    const serverPath = path.join(projectPath, "server");
+  
+  switch (stack) {
+    case 'mern':
+    case 'mern+tailwind+auth':
+    case 'mevn':
+    case 'mevn+tailwind+auth':
+    case 'mean':
+    case 'mean+tailwind+auth':
+     {
+      const serverPath = path.join(projectPath, 'server');
+      const backendTemplate = path.join(
+        __dirname, '..', 'templates', stack,'server'
+      );
+      
+      logger.info('📂 Copying template files...');
+      fs.copySync(backendTemplate, serverPath);
+      break;
+    }
     
-    logger.info("📂 Copying backend template files...");
-    fs.copySync(backendTemplate, serverPath);
-  }
-
-  else if(stack === 'mern+tailwind+auth'){
-    const backendTemplate = path.join(__dirname,"..","templates","mern+tailwind+auth","server");
-    const serverPath = path.join(projectPath, "server");
+    case 't3-stack': {
+      const clientPath = path.join(projectPath, 't3-app');
+      const frontendTemplate = path.join(__dirname, '..', 'templates', stack, 't3-app');
+      
+      logger.info('📂 Copying template files...');
+      fs.copySync(frontendTemplate, clientPath);
+      break;
+    }
     
-    logger.info("📂 Copying backend template files...");
-    fs.copySync(backendTemplate, serverPath);
-  }
+    case 'react+tailwind+firebase': {
+      const clientPath = path.join(projectPath, 'client');
+      const frontendTemplate = path.join(
+        __dirname, '..', 'templates', stack, config.language, 'client'
+      );
+      
+      logger.info('📂 Copying template files...');
+      fs.copySync(frontendTemplate, clientPath);
+      break;
+    }
 
-  else if(stack=='mevn'){
-    const backendTemplate = path.join(__dirname,"..","templates","mevn","server");
-    const serverPath = path.join(projectPath, "server");
+    case 'hono': {
+      const clientPath = path.join(projectPath, 'client');
+      const serverPath = path.join(projectPath, 'server');
+      // const frontendTemplate = path.join(
+      //   __dirname, '..', 'templates', stack, config.language, 'client'
+      // );
+      const backendTemplate = path.join(
+        __dirname, '..', 'templates', stack, config.language, 'server'
+      );
+      
+      logger.info('📂 Copying template files...');
+      fs.copySync(backendTemplate, serverPath);
+      break;
+    }
     
-    logger.info("📂 Copying backend template files...");
-    fs.copySync(backendTemplate, serverPath);
-  }
-
-  else if(stack !== "mean" && stack !== "mean+tailwind+auth" && stack !== "t3-stack"){
-
-    const frontendTemplate = path.join(__dirname, "..", "templates", stack, config.language, "client");
-    const backendTemplate = path.join(__dirname, "..", "templates", stack, config.language, "server");
-
-    const clientPath = path.join(projectPath, "client");
-    const serverPath = path.join(projectPath, "server");
-
-    logger.info("📂 Copying template files...");
-    fs.copySync(frontendTemplate, clientPath);
-    fs.copySync(backendTemplate, serverPath);
-  }
-
-  else if(stack === "mean" || stack === "mean+tailwind+auth" ){
-    const backendTemplate = path.join(__dirname, "..", "templates", stack, "server")
-    const serverPath = path.join(projectPath, "server");
-    
-    logger.info("📂 Copying template files...");
-    fs.copySync(backendTemplate, serverPath);
-  }
-
-  else if(stack === "t3-stack" ){
-    const frontendTemplate = path.join(__dirname, "..", "templates", stack, "t3-app");
-
-    const clientPath = path.join(projectPath, "t3-app");
-
-    logger.info("📂 Copying template files...");
-    fs.copySync(frontendTemplate, clientPath);
-  }
-  if(stack === "react+tailwind+firebase"){
-    const frontendTemplate = path.join(__dirname, "..", "templates", stack, config.language, "client");
-
-    const clientPath = path.join(projectPath, "client");
-
-    logger.info("📂 Copying template files...");
-    fs.copySync(frontendTemplate, clientPath);
+    default: {
+      // Handle other stacks with client-server structure
+      const clientPath = path.join(projectPath, 'client');
+      const serverPath = path.join(projectPath, 'server');
+      const frontendTemplate = path.join(__dirname, '..', 'templates', stack, config.language, 'client');
+      const backendTemplate = path.join(__dirname, '..', 'templates', stack, config.language, 'server');
+      
+      logger.info('📂 Copying template files...');
+      fs.copySync(frontendTemplate, clientPath);
+      fs.copySync(backendTemplate, serverPath);
+    }
   }
 }

@@ -3,28 +3,37 @@ import { logger } from "./logger.js";
 import path from "path";
 import fs from "fs";
 
-export function installDependencies(projectPath, config, projectName,server=true,dependencies=[]) {
-  logger.info("📦 Installing dependencies...");
-
+export function installDependencies(projectPath, config, projectName, server = true, dependencies = []) {
   try {
-    const clientDir = fs.existsSync(path.join(projectPath, "client"))
-      ? path.join(projectPath, "client")
-      : path.join(projectPath, "client");
+    // Handle T3 stack which uses t3-app directory
+    if (config.stack === 't3-stack') {
+      const t3AppDir = path.join(projectPath, 't3-app');
+      if (fs.existsSync(t3AppDir)) {
+        logger.info("📦 Installing T3 stack dependencies...");
+        execSync("npm install", { cwd: t3AppDir, stdio: "inherit", shell: true });
+        logger.info("✅ T3 stack dependencies installed successfully");
+        return;
+      }
+    }
     
-    const serverDir = fs.existsSync(path.join(projectPath, "server"))
-      ? path.join(projectPath, "server")
-      : path.join(projectPath, "server");
-
+    // Handle other stacks with client/server structure
+    const clientDir = path.join(projectPath, "client");
+    const serverDir = path.join(projectPath, "server");
+    
     if (fs.existsSync(clientDir)) {
+      logger.info("📦 Installing Frontend dependencies...");
       execSync("npm install", { cwd: clientDir, stdio: "inherit", shell: true });
     }
+    
     if (server && fs.existsSync(serverDir)) {
+      logger.info("📦 Installing Backend dependencies...");
       execSync("npm install " + dependencies.join(" "), { cwd: serverDir, stdio: "inherit", shell: true });
     }
 
     logger.info("✅ Dependencies installed successfully");
   } catch (err) {
     logger.error("❌ Failed to install dependencies");
+    logger.error(err.message);
     throw err;
   }
 }
@@ -38,10 +47,12 @@ export function angularSetup(projectPath, config, projectName) {
     execSync(`npx -y @angular/cli new client --style=css --skip-git --skip-install`, {
       cwd: projectPath,
       stdio: "inherit",
-      shell: true, // fixes ENOENT
+      shell: true, 
     });
 
     logger.info("✅ Angular project created successfully!");
+    // Server setup is now handled separately in project.js
+    return true;
   } catch (error) {
     logger.error("❌ Failed to set up Angular");
     throw error;
@@ -89,6 +100,7 @@ export function angularTailwindSetup(projectPath, config, projectName) {
     );
 
     logger.info("✅ Angular + Tailwind setup completed!");
+    return true;
   } catch (error) {
     logger.error("❌ Failed to set up Angular Tailwind");
     throw error;
@@ -124,6 +136,8 @@ export function HonoReactSetup(projectPath, config, projectName) {
     });
 
     logger.info("Created Hono + React Project !");
+    serverAuthSetup(projectPath,config,projectName);
+
   } catch (error) {
     logger.error("❌ Failed to set up Hono + react Project using cli");
     throw error;
@@ -249,32 +263,15 @@ export function mernSetup(projectPath, config, projectName) {
         
     }
 
-    serverSetup(projectPath,config,projectName);
+    if(config.stack === "mern+tailwind+auth"){
+      serverAuthSetup(projectPath,config,projectName);
+    }
+    else if(config.stack === "mern"){
+      serverSetup(projectPath,config,projectName);
+    }
     logger.info("✅ MERN project created successfully!");
   } catch (error) {
     logger.error("❌ Failed to set up MERN");
-    throw error;
-  }
-}
-
-export function serverSetup(projectPath,config,projectName){
-  try{
-    execSync(`npm init -y`, { cwd: path.join(projectPath, "server") });
-    installDependencies(projectPath,config,projectName,true,["dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
-    logger.info("✅ Server project created successfully!");
-  }catch(error){
-    logger.error("❌ Failed to set up server");
-    throw error;
-  }
-}
-
-export function serverAuthSetup(projectPath,config,projectName){
-  try {
-    execSync(`npm init -y`, { cwd: path.join(projectPath, "server") });
-    installDependencies(projectPath,config,projectName,true,["bcrypt","jsonwebtoken","cookie-parser","dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
-    logger.info("✅ Server Auth project created successfully!");
-  } catch (error) {
-    logger.error("❌ Failed to set up server auth");
     throw error;
   }
 }
@@ -408,8 +405,119 @@ export function mevnSetup(projectPath,config,projectName){
     // serverSetup(projectPath,config,projectName);
     logger.info("✅ MEVN project created successfully!");
 
+    return true
   } catch (error) {
     logger.error("❌ Failed to set up MEVN");
+    throw error;
+  }
+}
+
+export function mevnTailwindAuthSetup(projectPath, config, projectName) {
+  logger.info("⚡ Setting up MEVN + Tailwind + Auth...");
+
+  try {
+    // 1. Create Vue client with Vite (js / ts)
+    const template = config.language === "typescript" ? "vue-ts" : "vue";
+    execSync(`npm create vite@latest client -- --t ${template} --no-rolldown --no-interactive`, {
+      cwd: projectPath,
+      stdio: "inherit",
+      shell: true,
+    });
+
+    const clientPath = path.join(projectPath, "client");
+
+    // 2. Install Tailwind plugin for Vite in client
+    execSync(`npm install tailwindcss @tailwindcss/vite`, {
+      cwd: clientPath,
+      stdio: "inherit",
+      shell: true,
+    });
+
+    // 3. Patch Vite config (handle .js / .ts like mernTailwindSetup)
+    const isJs = config.language === "javascript";
+    const viteConfigPath = isJs
+      ? path.join(clientPath, "vite.config.js")
+      : path.join(clientPath, "vite.config.ts");
+
+    if (fs.existsSync(viteConfigPath)) {
+      let viteConfigContent = fs.readFileSync(viteConfigPath, "utf-8");
+
+      viteConfigContent = viteConfigContent.replace(
+        /import \{\s*defineConfig\s*\}\s*from\s*['"]vite['"]/,
+        `import { defineConfig } from 'vite'\nimport tailwindcss from '@tailwindcss/vite'`
+      );
+
+      viteConfigContent = viteConfigContent.replace(
+        /plugins:\s*\[([^\]]*)\]/,
+        (match, pluginsInside) => {
+          if (!pluginsInside.includes("tailwindcss()")) {
+            return `plugins: [${pluginsInside.trim()} , tailwindcss()]`;
+          }
+          return match;
+        }
+      );
+
+      fs.writeFileSync(viteConfigPath, viteConfigContent, "utf-8");
+    }
+
+    // 4. Ensure Tailwind import exists in client CSS (try common filenames)
+    const possibleCssPaths = [
+      path.join(clientPath, "src", "index.css"),
+      path.join(clientPath, "src", "style.css"),
+      path.join(clientPath, "src", "assets", "main.css"),
+    ];
+    const cssPath = possibleCssPaths.find((p) => fs.existsSync(p));
+    if (cssPath) {
+      let cssContent = fs.readFileSync(cssPath, "utf-8");
+      if (!cssContent.includes("@import 'tailwindcss'") && !cssContent.includes('@import "tailwindcss"')) {
+        // try to place import before :root or at top
+        if (/:root/.test(cssContent)) {
+          cssContent = cssContent.replace(/:root/, `@import 'tailwindcss';\n\n:root`);
+        } else {
+          cssContent = `@import 'tailwindcss';\n\n` + cssContent;
+        }
+        fs.writeFileSync(cssPath, cssContent, "utf-8");
+      }
+    }
+
+    const vueJsPath = path.join(projectPath, "client", "src", "components", "HelloWorld.vue");
+
+    let vuejsPathContent = fs.readFileSync(vueJsPath, "utf-8");
+    vuejsPathContent = vuejsPathContent.replace(
+      /<p class="read-the-docs">Click on the Vite and Vue logos to learn more<\/p>/,
+      `<p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
+      <div class="fixed bottom-6 left-6 bg-black text-white px-4 py-2 text-sm rounded-2xl shadow-lg opacity-85 hover:opacity-100 transition-opacity duration-200 cursor-default">
+        Powered by <span class="font-semibold text-green-500">Celtrix</span>
+      </div>`
+    );
+    fs.writeFileSync(vueJsPath, vuejsPathContent, "utf-8");
+
+    logger.info("MEVN + Tailwind + Auth setup completed!");
+    return true
+  } catch (error) {
+    logger.error("Failed to set up MEVN + Tailwind + Auth");
+    throw error;
+  }
+}
+
+export function serverSetup(projectPath,config,projectName){
+  try{
+    execSync(`npm init -y`, { cwd: path.join(projectPath, "server") });
+    installDependencies(projectPath,config,projectName,true,["dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
+    logger.info("✅ Server project created successfully!");
+  }catch(error){
+    logger.error("❌ Failed to set up server");
+    throw error;
+  }
+}
+
+export function serverAuthSetup(projectPath,config,projectName){
+  try {
+    execSync(`npm init -y`, { cwd: path.join(projectPath, "server") });
+    installDependencies(projectPath,config,projectName,true,["bcrypt","jsonwebtoken","cookie-parser","dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
+    logger.info("✅ Server Auth project created successfully!");
+  } catch (error) {
+    logger.error("❌ Failed to set up server auth");
     throw error;
   }
 }

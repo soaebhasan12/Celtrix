@@ -4,7 +4,7 @@ import chalk from "chalk";
 import boxen from "boxen";
 import { logger } from "./logger.js";
 import { copyTemplates } from "./templateManager.js";
-import { HonoReactSetup,mernTailwindSetup, installDependencies, mernSetup, serverAuthSetup, serverSetup, mevnSetup } from "./installer.js";
+import { HonoReactSetup,mernTailwindSetup, installDependencies, mernSetup, serverAuthSetup, serverSetup, mevnSetup, mevnTailwindAuthSetup } from "./installer.js";
 import { angularSetup, angularTailwindSetup } from "./installer.js";
 
 export async function setupProject(projectName, config) {
@@ -37,12 +37,10 @@ export async function setupProject(projectName, config) {
 
   // --- Copy & Install ---
 
-  if(config.stack !== "mean" && config.stack !== "mean+tailwind+auth" && config.stack !== "react+tailwind+firebase"){
-
-  if(config.stack !== "mean" && config.stack !== "mean+tailwind+auth" && config.stack!=="hono"){
-
+  if (config.stack ==="mern") {
+    mernSetup(projectPath,config,projectName);
     copyTemplates(projectPath, config);
-    installDependencies(projectPath, config, projectName);
+    installDependencies(projectPath, config, projectName,false,[])
   }
 
   if(config.stack==="mern+tailwind+auth"){
@@ -50,27 +48,100 @@ export async function setupProject(projectName, config) {
     copyTemplates(projectPath, config);
     mernTailwindSetup(projectPath, config, projectName);
     installDependencies(projectPath, config, projectName);
-    serverAuthSetup(projectPath,config,projectName);
+    // serverAuthSetup(projectPath,config,projectName);
   }
 
   if(config.stack === 'mevn'){
-    mevnSetup(projectPath,config,projectName)
-    copyTemplates(projectPath,config)
-    installDependencies(projectPath,config,projectName)
-    serverSetup(projectPath,config,projectName)
+    try{
+      mevnSetup(projectPath,config,projectName)
+      copyTemplates(projectPath,config)
+      installDependencies(projectPath,config,projectName)
+
+      try {
+        serverSetup(projectPath,config,projectName);
+      } catch (error) {
+        logger.warn("⚠️  Server setup had issues, but continuing with client setup");
+        logger.warn(error.message);
+      }
+    }
+    catch(error){
+      logger.error("❌ Failed to set up MEVN");
+      throw error;
+    }
+  }
+
+  if(config.stack === 'mevn+tailwind+auth'){
+    try {
+      // 1. Set up MEVN + Tailwind + Auth
+      mevnTailwindAuthSetup(projectPath, config, projectName);
+      
+      // 2. Copy templates
+      copyTemplates(projectPath, config);
+      
+      // 3. Install dependencies
+      installDependencies(projectPath, config, projectName);
+      
+      // 4. Try to set up server auth (but don't fail if it doesn't work)
+      try {
+        serverAuthSetup(projectPath, config, projectName);
+      } catch (serverError) {
+        logger.warn("⚠️  Server setup had issues, but continuing with client setup");
+        logger.warn(serverError.message);
+      }
+    } catch (error) {
+      logger.error("❌ Failed to set up MEVN+tailwind+auth");
+      logger.error(error.message);
+      throw error;
+    }
   }
 
   if(config.stack === "mean"){
-    angularSetup(projectPath, config);
-    installDependencies(projectPath, config, projectName);
-    copyTemplates(projectPath, config);
-    serverSetup(projectPath,config,projectName)
+    try {
+      // First create Angular project
+      angularSetup(projectPath, config, projectName);
+      
+      // Then copy templates
+      copyTemplates(projectPath, config);
+      
+      // Then install dependencies
+      installDependencies(projectPath, config, projectName);
+      
+      // Try server setup separately and don't let it fail the entire process
+      try {
+        serverSetup(projectPath, config, projectName);
+      } catch (serverError) {
+        logger.warn("⚠️  Server setup had issues, but continuing with client setup");
+        logger.warn(serverError.message);
+      }
+    } catch (error) {
+      logger.error("❌ Failed to set up MEAN stack");
+      throw error;
+    }
   }
   
   if(config.stack === "mean+tailwind+auth"){
-    angularTailwindSetup(projectPath, config, projectName);
-    installDependencies(projectPath, config, projectName);
-    copyTemplates(projectPath, config);
+    try {
+      // 1. Set up Angular + Tailwind
+      angularTailwindSetup(projectPath, config, projectName);
+      
+      // 2. Copy templates
+      copyTemplates(projectPath, config);
+      
+      // 3. Install dependencies
+      installDependencies(projectPath, config, projectName);
+      
+      // 4. Try to set up server auth (but don't fail if it doesn't work)
+      try {
+        serverAuthSetup(projectPath, config, projectName);
+      } catch (serverError) {
+        logger.warn("⚠️  Server setup had issues, but continuing with client setup");
+        logger.warn(serverError.message);
+      }
+    }
+    catch(error){
+      logger.error("❌ Failed to set up MEAN+tailwind+Auth stack");
+      throw error;
+    }
   }
 
 
@@ -82,8 +153,8 @@ export async function setupProject(projectName, config) {
   
   if(config.stack === "hono"){
    try{
-
      HonoReactSetup(projectPath,config,projectName);
+     copyTemplates(projectPath, config);
      installDependencies(projectPath, config, projectName,false);
     }
     catch{
@@ -91,10 +162,20 @@ export async function setupProject(projectName, config) {
     }
   }
 
-  if (config.stack ==="mern") {
-    mernSetup(projectPath,config,projectName);
-    copyTemplates(projectPath, config);
-    installDependencies(projectPath, config, projectName,false,[])
+  if(config.stack==='t3-stack'){
+    try {
+      // Copy template files
+      copyTemplates(projectPath, config, projectName);
+      
+      // Install all dependencies (both client and server)
+      installDependencies(projectPath, config, projectName);
+      
+      logger.info("✅ T3 stack project created successfully!");
+    } catch (error) {
+      logger.error("❌ Failed to set up T3 stack");
+      logger.error(error.message);
+      throw error;
+    }
   }
 
   // --- Success + Next Steps ---
