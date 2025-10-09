@@ -43,111 +43,36 @@ export async function setupProject(projectName, config) {
     installDependencies(projectPath, config, projectName,false,[])
   }
 
-  if(config.stack==="mern+tailwind+auth"){
-    // Setup MERN first (includes client setup)
-    await mernSetup(projectPath, config, projectName);
-    
-    // Copy templates
-    await copyTemplates(projectPath, config);
-    
-    // Setup Tailwind (no need to install deps again)
-    await mernTailwindSetup(projectPath, config, projectName);
-    
-    // Setup server with auth (handles its own deps)
-    await serverAuthSetup(projectPath, config, projectName);
-  }
-
   if(config.stack === 'mevn'){
-    try{
-      mevnSetup(projectPath,config,projectName)
-      copyTemplates(projectPath,config)
-      installDependencies(projectPath,config,projectName)
-
-      try {
-        serverSetup(projectPath,config,projectName);
-      } catch (error) {
-        logger.warn("⚠️  Server setup had issues, but continuing with client setup");
-        logger.warn(error.message);
-      }
-    }
-    catch(error){
-      logger.error("❌ Failed to set up MEVN");
-      throw error;
-    }
-  }
-
-  if(config.stack === 'mevn+tailwind+auth'){
-    try {
-      // 1. Set up MEVN + Tailwind + Auth
-      mevnTailwindAuthSetup(projectPath, config, projectName);
-      
-      // 2. Copy templates
-      copyTemplates(projectPath, config);
-      
-      // 3. Install dependencies
-      installDependencies(projectPath, config, projectName);
-      
-      // 4. Try to set up server auth (but don't fail if it doesn't work)
-      try {
-        serverAuthSetup(projectPath, config, projectName);
-      } catch (serverError) {
-        logger.warn("⚠️  Server setup had issues, but continuing with client setup");
-        logger.warn(serverError.message);
-      }
-    } catch (error) {
-      logger.error("❌ Failed to set up MEVN+tailwind+auth");
-      logger.error(error.message);
-      throw error;
-    }
+    mevnSetup(projectPath,config,projectName)
+    copyTemplates(projectPath,config)
+    installDependencies(projectPath,config,projectName,false,[])
   }
 
   if(config.stack === "mean"){
-    try {
-      // First create Angular project
-      angularSetup(projectPath, config, projectName);
-      
-      // Then copy templates
-      copyTemplates(projectPath, config);
-      
-      // Then install dependencies
-      installDependencies(projectPath, config, projectName);
-      
-      // Try server setup separately and don't let it fail the entire process
-      try {
-        serverSetup(projectPath, config, projectName);
-      } catch (serverError) {
-        logger.warn("⚠️  Server setup had issues, but continuing with client setup");
-        logger.warn(serverError.message);
-      }
-    } catch (error) {
-      logger.error("❌ Failed to set up MEAN stack");
-      throw error;
-    }
+    angularSetup(projectPath, config, projectName);
+    copyTemplates(projectPath, config);
+    installDependencies(projectPath, config, projectName); 
   }
-  
+
+  if(config.stack==="mern+tailwind+auth"){
+    await mernSetup(projectPath, config, projectName);
+    await copyTemplates(projectPath, config);
+    await mernTailwindSetup(projectPath, config, projectName);
+    await serverAuthSetup(projectPath, config, projectName);
+  }
+
+  if(config.stack === 'mevn+tailwind+auth'){
+    await mevnTailwindAuthSetup(projectPath, config, projectName);
+    await copyTemplates(projectPath, config);
+    await serverAuthSetup(projectPath, config,projectName)
+  }
+
   if(config.stack === "mean+tailwind+auth"){
-    try {
-      // 1. Set up Angular + Tailwind
-      angularTailwindSetup(projectPath, config, projectName);
-      
-      // 2. Copy templates
-      copyTemplates(projectPath, config);
-      
-      // 3. Install dependencies
-      installDependencies(projectPath, config, projectName);
-      
-      // 4. Try to set up server auth (but don't fail if it doesn't work)
-      try {
-        serverAuthSetup(projectPath, config, projectName);
-      } catch (serverError) {
-        logger.warn("⚠️  Server setup had issues, but continuing with client setup");
-        logger.warn(serverError.message);
-      }
-    }
-    catch(error){
-      logger.error("❌ Failed to set up MEAN+tailwind+Auth stack");
-      throw error;
-    }
+    angularTailwindSetup(projectPath, config, projectName);
+    copyTemplates(projectPath, config);
+    installDependencies(projectPath, config, projectName);
+    serverAuthSetup(projectPath, config, projectName); 
   }
 
 

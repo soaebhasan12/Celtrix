@@ -417,12 +417,22 @@ export function mevnTailwindAuthSetup(projectPath, config, projectName) {
 
   try {
     // 1. Create Vue client with Vite (js / ts)
-    const template = config.language === "typescript" ? "vue-ts" : "vue";
-    execSync(`npm create vite@latest client -- --t ${template} --no-rolldown --no-interactive`, {
-      cwd: projectPath,
-      stdio: "inherit",
-      shell: true,
-    });
+    if(config.language==='javascript'){
+
+      execSync(`npm create vite@latest client -- --t vue --no-rolldown --no-interactive`, {
+        cwd: projectPath,
+        stdio: "inherit",
+        shell: true,
+      });
+    }
+
+    else{
+      execSync(`npm create vite@latest client -- --t vue-ts --no-rolldown --no-interactive`, {
+        cwd: projectPath,
+        stdio: "inherit",
+        shell: true,
+      });
+    }
 
     const clientPath = path.join(projectPath, "client");
 
@@ -493,7 +503,8 @@ export function mevnTailwindAuthSetup(projectPath, config, projectName) {
     fs.writeFileSync(vueJsPath, vuejsPathContent, "utf-8");
 
     logger.info("MEVN + Tailwind + Auth setup completed!");
-    return true
+
+    serverAuthSetup(projectPath,config,projectName);
   } catch (error) {
     logger.error("Failed to set up MEVN + Tailwind + Auth");
     throw error;
@@ -516,8 +527,6 @@ export function serverSetup(projectPath,config,projectName){
       shell: true
     });
 
-    installDependencies(projectPath,config,projectName,true,["dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
-
   }catch(error){
     logger.error("❌ Failed to set up server");
     throw error;
@@ -534,14 +543,18 @@ export function serverAuthSetup(projectPath,config,projectName){
     }
 
     // Initialize package.json
-    execSync('npm init -y', { 
-      cwd: serverDir,
-      stdio: 'ignore',  // Suppress output
-      shell: true
-    });
+    try {
+      execSync('npm init -y', { 
+        cwd: serverDir,
+        stdio: 'ignore',  // Suppress output
+        shell: true
+      });
+    } catch (error) {
+      logger.info()
+    }
 
     installDependencies(projectPath,config,projectName,true,["bcrypt","jsonwebtoken","cookie-parser","dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
-  
+
   } catch (error) {
     logger.error("❌ Failed to set up server auth");
     throw error;
