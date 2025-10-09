@@ -177,7 +177,7 @@ export function mernSetup(projectPath, config, projectName) {
       for (let i = 0; i < lines.length; i++) {
         if (lines[i].includes("</>")) {
           // inject badge right after opening fragment
-          lines.splice(i, 0, `  <div className="powered-badge">Powered by <span className="celtrix">Celtrix</span></div>`);
+          lines.splice(i, 0, `  <button className="powered-badge" onClick={() => window.open('https://github.com/celtrix-os/Celtrix', '_blank')}>Powered by <span className="celtrix">Celtrix</span></button>`);
           break;
         }
       }
@@ -188,10 +188,12 @@ export function mernSetup(projectPath, config, projectName) {
     const badgeCSS = `
     .powered-badge {
       position: fixed;
-      bottom: 1.5rem;
-      left: 1.5rem;
-      font-size: 0.875rem;
+      bottom: 50%;
+      right: 1.5rem;
+      font-size: 1rem;
+      font-weight: 300;
       background-color: black;
+      line-height: 1.5;
       color: white;
       padding: 0.5rem 1rem;
       border-radius: 0.75rem;
@@ -199,17 +201,19 @@ export function mernSetup(projectPath, config, projectName) {
       0 4px 6px -2px rgba(0,0,0,0.05);
       opacity: 0.8;
       transition: opacity 0.2s ease-in-out;
-      }
+    }
       
-      .powered-badge:hover {
+    .powered-badge:hover {
       opacity: 1;
-      }
+    }
       
-      .powered-badge .celtrix {
-        font-weight: 600;
-        color: #4ade80;
-        }
-        `;
+    .celtrix {
+      font-weight: 620;
+      font-size: 1.05rem;
+      color: #4ade80;
+      text-decoration: underline;
+    }
+    `;
         
         fs.appendFileSync(appCssPath, badgeCSS, "utf-8");
         
@@ -225,7 +229,7 @@ export function mernSetup(projectPath, config, projectName) {
       for (let i = 0; i < lines.length; i++) {
         if (lines[i].includes("</>")) {
           // inject badge right after opening fragment
-          lines.splice(i, 0, `  <div className="powered-badge">Powered by <span className="celtrix">Celtrix</span></div>`);
+          lines.splice(i, 0, `  <button className="powered-badge" onClick={() => window.open('https://github.com/celtrix-os/Celtrix', '_blank')}>Powered by <span className="celtrix">Celtrix</span></button>`);
           break;
         }
       }
@@ -236,10 +240,12 @@ export function mernSetup(projectPath, config, projectName) {
     const badgeCSS = `
     .powered-badge {
       position: fixed;
-      bottom: 1.5rem;
-      left: 1.5rem;
-      font-size: 0.875rem;
+      bottom: 50%;
+      right: 1.5rem;
+      font-size: 1rem;
+      font-weight: 300;
       background-color: black;
+      line-height: 1.5;
       color: white;
       padding: 0.5rem 1rem;
       border-radius: 0.75rem;
@@ -249,15 +255,17 @@ export function mernSetup(projectPath, config, projectName) {
       transition: opacity 0.2s ease-in-out;
       }
       
-      .powered-badge:hover {
+    .powered-badge:hover {
       opacity: 1;
-      }
-      
-      .powered-badge .celtrix {
-        font-weight: 600;
-        color: #4ade80;
-        }
-        `;
+    }
+    
+    .celtrix {
+      font-weight: 620;
+      font-size: 1.05rem;
+      color: #4ade80;
+      text-decoration: underline;
+    }
+    `;
         
         fs.appendFileSync(appCssPath, badgeCSS, "utf-8");
         
@@ -338,57 +346,69 @@ export function mevnSetup(projectPath,config,projectName){
 
     
     const vueJsPath = path.join(projectPath, "client", "src", "components", "HelloWorld.vue");
+    const scriptPath = path.join(projectPath, "client", "src", "components", "HelloWorld.vue");
+
+    let scriptPathContent = fs.readFileSync(scriptPath, "utf-8");
+
+    // Replace or inject content inside <script setup lang="ts">
+    scriptPathContent = scriptPathContent.replace(
+      /<script setup lang="ts">([\s\S]*?)<\/script>/,
+      (match, p1) => {
+        // Keep existing content and add openCeltrix function if not present
+        if (!p1.includes("openCeltrix")) {
+          return `<script setup lang="ts">
+    ${p1.trim()}
+
+      const openCeltrix = () => {
+        window.open('https://github.com/celtrix-os/Celtrix', '_blank');
+      }
+      </script>`;
+        }
+        return match;
+      }
+    );
+
+    fs.writeFileSync(scriptPath, scriptPathContent, "utf-8");
   
     let vueJsPathContent = fs.readFileSync(vueJsPath, "utf-8");
   
     vueJsPathContent = vueJsPathContent.replace(
       /<p class="read-the-docs">Click on the Vite and Vue logos to learn more<\/p>/,
       `<p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
-    <div class="powered-box">
-      Powered by <span class="powered-highlight">Celtrix</span>
-    </div>`
+    <button className="powered-badge" @click="openCeltrix">Powered by <span className="celtrix">Celtrix</span></button>`
     );
   
     fs.writeFileSync(vueJsPath, vueJsPathContent, "utf-8");
 
-    // Replace <p> with new block
-    vueJsPathContent = vueJsPathContent.replace(
-      /<p class="read-the-docs">Click on the Vite and Vue logos to learn more<\/p>/,
-      `<p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
-    <div class="powered-box">
-      Powered by <span class="powered-highlight">Celtrix</span>
-    </div>`
-    );
-
-    // Replace <style> block (or append if missing)
+    // Replace <style> block (or append if missing)~
     const newStyles = `<style scoped>
-    .powered-box {
+    .powered-badge {
       position: fixed;
-      bottom: 24px;
-      left: 24px;
+      bottom: 50%;
+      right: 1.5rem;
+      font-size: 1rem;
+      font-weight: 300;
       background-color: black;
+      line-height: 1.5;
       color: white;
-      padding: 8px 16px;
-      font-size: 0.875rem;
-      border-radius: 16px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-      opacity: 0.85;
-      transition: opacity 0.2s ease;
-      cursor: default;
-    }
-
-    .powered-box:hover {
+      padding: 0.5rem 1rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),
+      0 4px 6px -2px rgba(0,0,0,0.05);
+      opacity: 0.8;
+      transition: opacity 0.2s ease-in-out;
+      }
+      
+      .powered-badge:hover {
       opacity: 1;
-    }
-
-    .powered-highlight {
-      font-weight: 600;
-      color: #22c55e;
-    }
-
-    .read-the-docs {
-      color: #888;
-    }
+      }
+      
+      .celtrix {
+        font-weight: 620;
+        font-size: 1.05rem;
+        color: #4ade80;
+        text-decoration: underline;
+        }
     </style>`;
 
     if (/<style scoped>[\s\S]*?<\/style>/.test(vueJsPathContent)) {
@@ -491,14 +511,46 @@ export function mevnTailwindAuthSetup(projectPath, config, projectName) {
     }
 
     const vueJsPath = path.join(projectPath, "client", "src", "components", "HelloWorld.vue");
+    const scriptPath = path.join(projectPath, "client", "src", "components", "HelloWorld.vue");
+
+
+    let scriptPathContent = fs.readFileSync(scriptPath, "utf-8");
+
+    // Replace or inject content inside <script setup lang="ts">
+    scriptPathContent = scriptPathContent.replace(
+      /<script setup lang="ts">([\s\S]*?)<\/script>/,
+      (match, p1) => {
+        // Keep existing content and add openCeltrix function if not present
+        if (!p1.includes("openCeltrix")) {
+          return `<script setup lang="ts">
+    ${p1.trim()}
+
+      const openCeltrix = () => {
+        window.open('https://github.com/celtrix-os/Celtrix', '_blank');
+      }
+      </script>`;
+        }
+        return match;
+      }
+    );
+
+    fs.writeFileSync(scriptPath, scriptPathContent, "utf-8");
+
 
     let vuejsPathContent = fs.readFileSync(vueJsPath, "utf-8");
     vuejsPathContent = vuejsPathContent.replace(
       /<p class="read-the-docs">Click on the Vite and Vue logos to learn more<\/p>/,
       `<p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
-      <div class="fixed bottom-6 left-6 bg-black text-white px-4 py-2 text-sm rounded-2xl shadow-lg opacity-85 hover:opacity-100 transition-opacity duration-200 cursor-default">
-        Powered by <span class="font-semibold text-green-500">Celtrix</span>
-      </div>`
+       <button
+    @click="openCeltrix"
+    class="fixed bottom-1/2 right-6 text-base font-light bg-black-500 text-white px-4 py-2 rounded-xl shadow-lg shadow-black/20 hover:opacity-100 transition-opacity duration-200 leading-relaxed"
+  >
+    Powered by
+    <span class="font-semibold text-[#4ade80] underline text-[1.05rem] ml-1">
+      Celtrix
+    </span>
+  </button>
+`
     );
     fs.writeFileSync(vueJsPath, vuejsPathContent, "utf-8");
 
@@ -544,7 +596,7 @@ export function serverAuthSetup(projectPath,config,projectName){
 
     // Initialize package.json
     try {
-      execSync('npm init -y', { 
+      execSync('npm init -y', {
         cwd: serverDir,
         stdio: 'ignore',  // Suppress output
         shell: true
