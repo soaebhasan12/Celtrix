@@ -4,6 +4,8 @@ import gradient from "gradient-string";
 import figlet from "figlet";
 import { createProject } from "./commands/scaffold.js";
 
+const orange = chalk.hex("#FF6200");
+
 function showBanner() {
   console.log(
     gradient.pastel(
@@ -26,17 +28,60 @@ async function askStackQuestions() {
       name: "stack",
       message: "Choose your stack:",
       choices: [
-        { name: chalk.bold.blue("MERN") + " → MongoDB + Express + React + Node.js", value: "mern" },
-        { name: chalk.bold.green("MERN") + " + Tailwind + Auth", value: "mern+tailwind+auth" },
-        { name: chalk.bold.red("MEAN") + " → MongoDB + Express + Angular + Node.js", value: "mean" },
-        { name: chalk.bold.magenta("MEAN") + " + Tailwind + Auth", value: "mean+tailwind+auth" },
-        { name: chalk.bold.cyan("MEVN") + " → MongoDB + Express + Vue.js + Node.js", value: "mevn" },
-        { name: chalk.bold.yellow("MEVN") + " + Tailwind + Auth", value: "mevn+tailwind+auth" },
-        { name: chalk.bold.yellow("Next.js") + " + tRPC + Prisma + Tailwind + Auth", value: "t3-stack" },
-        { name: chalk.bold.red("React") + " + Tailwind + Firebase", value: "react+tailwind+firebase" },
-        { name: chalk.bold.red("Hono") + " → Hono + Prisma + React", value: "hono" }
-
-
+        {
+          name:
+            chalk.blueBright.bold("⚡ MERN") +
+            chalk.gray(" → MongoDB + Express + React + Node.js"),
+          value: "mern",
+        },
+        {
+          name:
+            chalk.redBright.bold("⚡ MEAN") +
+            chalk.gray(" → MongoDB + Express + Angular + Node.js"),
+          value: "mean",
+        },
+        {
+          name:
+            chalk.cyanBright.bold("⚡ MEVN") +
+            chalk.gray(" → MongoDB + Express + Vue + Node.js"),
+          value: "mevn",
+        },
+        {
+          name:
+            chalk.greenBright.bold("⚡ MERN + Tailwind + Auth") +
+            chalk.gray(" → full-stack with styling & auth"),
+          value: "mern+tailwind+auth",
+        },
+        {
+          name:
+            chalk.magentaBright.bold("⚡ MEAN + Tailwind + Auth") +
+            chalk.gray(" → Angular setup with extras"),
+          value: "mean+tailwind+auth",
+        },
+        {
+          name:
+            chalk.yellowBright.bold("⚡ MEVN + Tailwind + Auth") +
+            chalk.gray(" → Vue stack with auth ready"),
+          value: "mevn+tailwind+auth",
+        },
+        {
+          name:
+            orange.bold("⚡ React + Tailwind + Firebase") +
+            chalk.gray(" → simple frontend stack"),
+          value: "react+tailwind+firebase",
+        },
+        {
+          name:
+            chalk.whiteBright.bold("⚡ Next.js (T3 Stack)") +
+            chalk.gray(" → tRPC + Prisma + Tailwind + Auth"),
+          value: "t3-stack",
+        },
+        {
+          name:
+            chalk.magentaBright.bold("⚡ Hono") +
+            chalk.gray(" → Hono + Prisma + React"),
+          value: "hono",
+        },
       ],
       pageSize: 10,
       default: "mern",
