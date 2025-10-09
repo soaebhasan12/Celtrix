@@ -67,7 +67,7 @@ async function askStackQuestions() {
         {
           name:
             orange.bold("⚡ React + Tailwind + Firebase") +
-            chalk.gray(" → simple frontend stack"),
+            chalk.gray(" → fast way to build apps"),
           value: "react+tailwind+firebase",
         },
         {
