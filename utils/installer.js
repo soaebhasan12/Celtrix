@@ -502,9 +502,22 @@ export function mevnTailwindAuthSetup(projectPath, config, projectName) {
 
 export function serverSetup(projectPath,config,projectName){
   try{
-    execSync(`npm init -y`, { cwd: path.join(projectPath, "server") });
+    const serverDir = path.join(projectPath, "server");
+    
+    // Create server directory if it doesn't exist
+    if (!fs.existsSync(serverDir)) {
+      fs.mkdirSync(serverDir, { recursive: true });
+    }
+
+    // Initialize package.json
+    execSync('npm init -y', { 
+      cwd: serverDir,
+      stdio: 'ignore',  // Suppress output
+      shell: true
+    });
+
     installDependencies(projectPath,config,projectName,true,["dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
-    logger.info("✅ Server project created successfully!");
+
   }catch(error){
     logger.error("❌ Failed to set up server");
     throw error;
@@ -513,9 +526,22 @@ export function serverSetup(projectPath,config,projectName){
 
 export function serverAuthSetup(projectPath,config,projectName){
   try {
-    execSync(`npm init -y`, { cwd: path.join(projectPath, "server") });
+    const serverDir = path.join(projectPath, "server");
+    
+    // Create server directory if it doesn't exist
+    if (!fs.existsSync(serverDir)) {
+      fs.mkdirSync(serverDir, { recursive: true });
+    }
+
+    // Initialize package.json
+    execSync('npm init -y', { 
+      cwd: serverDir,
+      stdio: 'ignore',  // Suppress output
+      shell: true
+    });
+
     installDependencies(projectPath,config,projectName,true,["bcrypt","jsonwebtoken","cookie-parser","dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
-    logger.info("✅ Server Auth project created successfully!");
+  
   } catch (error) {
     logger.error("❌ Failed to set up server auth");
     throw error;

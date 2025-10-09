@@ -44,11 +44,17 @@ export async function setupProject(projectName, config) {
   }
 
   if(config.stack==="mern+tailwind+auth"){
-    mernSetup(projectPath,config,projectName);
-    copyTemplates(projectPath, config);
-    mernTailwindSetup(projectPath, config, projectName);
-    installDependencies(projectPath, config, projectName);
-    // serverAuthSetup(projectPath,config,projectName);
+    // Setup MERN first (includes client setup)
+    await mernSetup(projectPath, config, projectName);
+    
+    // Copy templates
+    await copyTemplates(projectPath, config);
+    
+    // Setup Tailwind (no need to install deps again)
+    await mernTailwindSetup(projectPath, config, projectName);
+    
+    // Setup server with auth (handles its own deps)
+    await serverAuthSetup(projectPath, config, projectName);
   }
 
   if(config.stack === 'mevn'){
