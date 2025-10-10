@@ -171,7 +171,20 @@ export function mernSetup(projectPath, config, projectName) {
       const appJsxPath = path.join(projectPath, "client", "src", "App.jsx");
       const appCssPath = path.join(projectPath,"client", "src", "index.css");
       
-      let appJsx = fs.readFileSync(appJsxPath, "utf-8");
+      // Check if App.jsx exists before trying to read it
+      if (!fs.existsSync(appJsxPath)) {
+        logger.warn(`⚠️ App.jsx not found at ${appJsxPath}, skipping badge injection`);
+        return;
+      }
+
+      let appJsx;
+      try {
+        appJsx = fs.readFileSync(appJsxPath, "utf-8");
+      } catch (error) {
+        logger.error(`❌ Failed to read App.jsx: ${error.message}`);
+        return;
+      }
+
       const lines = appJsx.split("\n");
       
       for (let i = 0; i < lines.length; i++) {
@@ -182,7 +195,12 @@ export function mernSetup(projectPath, config, projectName) {
         }
       }
       
-      fs.writeFileSync(appJsxPath, lines.join("\n"), "utf-8");
+      try {
+        fs.writeFileSync(appJsxPath, lines.join("\n"), "utf-8");
+      } catch (error) {
+        logger.error(`❌ Failed to write App.jsx: ${error.message}`);
+        return;
+      }
       
     // append the fu*king CSS
     const badgeCSS = `
@@ -215,7 +233,16 @@ export function mernSetup(projectPath, config, projectName) {
     }
     `;
         
-        fs.appendFileSync(appCssPath, badgeCSS, "utf-8");
+        // Check if CSS file exists before appending
+        if (!fs.existsSync(appCssPath)) {
+          logger.warn(`⚠️ index.css not found at ${appCssPath}, skipping CSS injection`);
+        } else {
+          try {
+            fs.appendFileSync(appCssPath, badgeCSS, "utf-8");
+          } catch (error) {
+            logger.error(`❌ Failed to append CSS: ${error.message}`);
+          }
+        }
         
     }
 
@@ -223,7 +250,19 @@ export function mernSetup(projectPath, config, projectName) {
       const appTsxPath = path.join(projectPath, "client", "src", "App.tsx");
       const appCssPath = path.join(projectPath,"client", "src", "index.css");
       
-      let appTsx = fs.readFileSync(appTsxPath, "utf-8");
+      // Check if App.tsx exists before trying to read it
+      if (!fs.existsSync(appTsxPath)) {
+        logger.warn(`⚠️ App.tsx not found at ${appTsxPath}, skipping badge injection`);
+        return;
+      }
+
+      let appTsx;
+      try {
+        appTsx = fs.readFileSync(appTsxPath, "utf-8");
+      } catch (error) {
+        logger.error(`❌ Failed to read App.tsx: ${error.message}`);
+        return;
+      }
       const lines = appTsx.split("\n");
       
       for (let i = 0; i < lines.length; i++) {
@@ -234,7 +273,12 @@ export function mernSetup(projectPath, config, projectName) {
         }
       }
       
-      fs.writeFileSync(appTsxPath, lines.join("\n"), "utf-8");
+      try {
+        fs.writeFileSync(appTsxPath, lines.join("\n"), "utf-8");
+      } catch (error) {
+        logger.error(`❌ Failed to write App.tsx: ${error.message}`);
+        return;
+      }
       
     // append the fu*king CSS
     const badgeCSS = `
@@ -267,7 +311,16 @@ export function mernSetup(projectPath, config, projectName) {
     }
     `;
         
-        fs.appendFileSync(appCssPath, badgeCSS, "utf-8");
+        // Check if CSS file exists before appending
+        if (!fs.existsSync(appCssPath)) {
+          logger.warn(`⚠️ index.css not found at ${appCssPath}, skipping CSS injection`);
+        } else {
+          try {
+            fs.appendFileSync(appCssPath, badgeCSS, "utf-8");
+          } catch (error) {
+            logger.error(`❌ Failed to append CSS: ${error.message}`);
+          }
+        }
         
     }
 
@@ -513,8 +566,19 @@ export function mevnTailwindAuthSetup(projectPath, config, projectName) {
     const vueJsPath = path.join(projectPath, "client", "src", "components", "HelloWorld.vue");
     const scriptPath = path.join(projectPath, "client", "src", "components", "HelloWorld.vue");
 
+    // Check if Vue component exists before modifying
+    if (!fs.existsSync(scriptPath)) {
+      logger.warn(`⚠️ Vue component not found at ${scriptPath}, skipping badge injection`);
+      return;
+    }
 
-    let scriptPathContent = fs.readFileSync(scriptPath, "utf-8");
+    let scriptPathContent;
+    try {
+      scriptPathContent = fs.readFileSync(scriptPath, "utf-8");
+    } catch (error) {
+      logger.error(`❌ Failed to read Vue component: ${error.message}`);
+      throw error;
+    }
 
     // Replace or inject content inside <script setup lang="ts">
     scriptPathContent = scriptPathContent.replace(
