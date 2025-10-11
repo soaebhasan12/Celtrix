@@ -7,7 +7,7 @@ import { copyTemplates } from "./templateManager.js";
 import { HonoReactSetup, mernTailwindSetup, installDependencies, mernSetup, serverAuthSetup, serverSetup, mevnSetup, mevnTailwindAuthSetup } from "./installer.js";
 import { angularSetup, angularTailwindSetup } from "./installer.js";
 
-export async function setupProject(projectName, config, installDeps = true) {
+export async function setupProject(projectName, config, installDeps) {
   const projectPath = path.join(process.cwd(), projectName);
 
   if (fs.existsSync(projectPath)) {
