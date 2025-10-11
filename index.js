@@ -2,6 +2,9 @@ import inquirer from "inquirer";
 import chalk from "chalk";
 import gradient from "gradient-string";
 import figlet from "figlet";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import { createProject } from "./commands/scaffold.js";
 
 const orange = chalk.hex("#FF6200");
@@ -18,8 +21,6 @@ function showBanner() {
   );
   console.log(chalk.gray("⚡ Setup Web-apps in seconds, not hours ⚡\n"));
 }
-
-console.log("\n")
 
 async function askStackQuestions() {
   return await inquirer.prompt([
@@ -120,10 +121,71 @@ async function askProjectName() {
   return projectName;
 }
 
+function getVersion() {
+  try {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const packageJsonPath = path.join(__dirname, 'package.json');
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+    return packageJson.version;
+  } catch (error) {
+    return 'unknown';
+  }
+}
+
+function showVersion() {
+  const version = getVersion();
+  console.log(`${chalk.cyanBright('Celtrix')} ${chalk.gray('v')}${chalk.greenBright(version)}`);
+}
+
+function showHelp() {
+  const version = getVersion();
+  console.log(`${chalk.cyanBright.bold('Celtrix')} ${chalk.gray('v')}${chalk.greenBright(version)}`);
+  console.log(chalk.gray('⚡ Setup Web-apps in seconds, not hours ⚡\n'));
+
+  console.log(chalk.bold('Usage:'));
+  console.log(`  ${chalk.cyan('npx celtrix')} ${chalk.gray('[project-name]')} ${chalk.gray('[options]')}\n`);
+
+  console.log(chalk.bold('Options:'));
+  console.log(`  ${chalk.cyan('--version, -v')}     Show version number`);
+  console.log(`  ${chalk.cyan('--help, -h')}        Show help information\n`);
+
+  console.log(chalk.bold('Examples:'));
+  console.log(`  ${chalk.cyan('npx celtrix')}                 ${chalk.gray('# Interactive mode')}`);
+  console.log(`  ${chalk.cyan('npx celtrix my-app')}          ${chalk.gray('# Create project with name')}`);
+  console.log(`  ${chalk.cyan('npx celtrix --version')}       ${chalk.gray('# Show version')}`);
+  console.log(`  ${chalk.cyan('npx celtrix --help')}          ${chalk.gray('# Show this help')}\n`);
+
+  console.log(chalk.bold('Supported Stacks:'));
+  console.log(`  ${chalk.blueBright('MERN')}        ${chalk.gray('MongoDB + Express + React + Node.js')}`);
+  console.log(`  ${chalk.redBright('MEAN')}        ${chalk.gray('MongoDB + Express + Angular + Node.js')}`);
+  console.log(`  ${chalk.cyanBright('MEVN')}        ${chalk.gray('MongoDB + Express + Vue + Node.js')}`);
+  console.log(`  ${chalk.greenBright('MERN+Auth')}   ${chalk.gray('MERN with Tailwind & Authentication')}`);
+  console.log(`  ${chalk.magentaBright('React+Firebase')} ${chalk.gray('React + Tailwind + Firebase')}`);
+  console.log(`  ${chalk.whiteBright('T3 Stack')}    ${chalk.gray('Next.js + tRPC + Prisma + Tailwind')}`);
+  console.log(`  ${chalk.magentaBright('Hono')}        ${chalk.gray('Hono + Prisma + React')}`);
+
+  console.log(chalk.gray('\nFor more information, visit: https://github.com/celtrix-os/Celtrix'));
+}
+
 async function main() {
+  const args = process.argv.slice(2);
+
+  // Handle version flag
+  if (args.includes('--version') || args.includes('-v')) {
+    showVersion();
+    process.exit(0);
+  }
+
+  // Handle help flag
+  if (args.includes('--help') || args.includes('-h')) {
+    showHelp();
+    process.exit(0);
+  }
+
   showBanner();
 
-  let projectName = process.argv[2];
+  let projectName = args.find(arg => !arg.startsWith('--') && !arg.startsWith('-'));
   let config;
 
   try {
@@ -132,7 +194,6 @@ async function main() {
     }
     const stackAnswers = await askStackQuestions();
     config = { ...stackAnswers, projectName };
-    
 
     console.log(chalk.yellow("\n🚀 Creating your project...\n"));
     await createProject(projectName, config);
