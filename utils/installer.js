@@ -280,7 +280,7 @@ export function mernSetup(projectPath, config, projectName) {
         return;
       }
       
-    // append the fu*king CSS
+    // Append badge CSS styles
     const badgeCSS = `
     .powered-badge {
       position: fixed;
