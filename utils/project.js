@@ -1,14 +1,13 @@
 import path from "path";
 import fs from "fs-extra";
 import chalk from "chalk";
-import inquirer from "inquirer";
 import boxen from "boxen";
 import { logger } from "./logger.js";
 import { copyTemplates } from "./templateManager.js";
 import { HonoReactSetup, mernTailwindSetup, installDependencies, mernSetup, serverAuthSetup, serverSetup, mevnSetup, mevnTailwindAuthSetup } from "./installer.js";
 import { angularSetup, angularTailwindSetup } from "./installer.js";
 
-export async function setupProject(projectName, config) {
+export async function setupProject(projectName, config, installDeps = true) {
   const projectPath = path.join(process.cwd(), projectName);
 
   if (fs.existsSync(projectPath)) {
@@ -38,15 +37,6 @@ export async function setupProject(projectName, config) {
 
   // --- Copy & Install ---
 
-  // Ask user whether to install dependencies
-  const { installDeps } = await inquirer.prompt([
-    {
-      type: "confirm",
-      name: "installDeps",
-      message: "Do you want to install dependencies?",
-      default: true,
-    },
-  ]);
 
   if (config.stack === "mern") {
     mernSetup(projectPath, config, projectName);
@@ -67,23 +57,23 @@ export async function setupProject(projectName, config) {
   }
 
   else if (config.stack === "mern+tailwind+auth") {
-    await mernSetup(projectPath, config, projectName);
-    await copyTemplates(projectPath, config);
-    await mernTailwindSetup(projectPath, config, projectName);
-    await serverAuthSetup(projectPath, config, projectName);
+    mernSetup(projectPath, config, projectName);
+    copyTemplates(projectPath, config);
+    mernTailwindSetup(projectPath, config, projectName);
+    serverAuthSetup(projectPath, config, projectName, installDeps);
   }
 
   else if (config.stack === 'mevn+tailwind+auth') {
-    await mevnTailwindAuthSetup(projectPath, config, projectName);
-    await copyTemplates(projectPath, config);
-    await serverAuthSetup(projectPath, config, projectName)
+    mevnTailwindAuthSetup(projectPath, config, projectName);
+    copyTemplates(projectPath, config);
+    serverAuthSetup(projectPath, config, projectName, installDeps)
   }
 
   else if (config.stack === "mean+tailwind+auth") {
     angularTailwindSetup(projectPath, config, projectName);
     copyTemplates(projectPath, config);
     if (installDeps) installDependencies(projectPath, config, projectName);
-    serverAuthSetup(projectPath, config, projectName);
+    serverAuthSetup(projectPath, config, projectName, installDeps);
   }
 
 

@@ -627,7 +627,7 @@ export function mevnTailwindAuthSetup(projectPath, config, projectName) {
   }
 }
 
-export function serverSetup(projectPath,config,projectName){
+export function serverSetup(projectPath,config,projectName, installDeps){
   try{
     const serverDir = path.join(projectPath, "server");
     
@@ -643,7 +643,9 @@ export function serverSetup(projectPath,config,projectName){
       shell: true
     });
 
-    installDependencies(projectPath,config,projectName,true,["express","dotenv","mongoose","nodemon","cors","helmet","express-rate-limit"])
+    if (installDeps) {
+      installDependencies(projectPath,config,projectName,true,["express","dotenv","mongoose","nodemon","cors","helmet","express-rate-limit"])
+    }
 
   }catch(error){
     logger.error("❌ Failed to set up server");
@@ -651,7 +653,7 @@ export function serverSetup(projectPath,config,projectName){
   }
 }
 
-export function serverAuthSetup(projectPath,config,projectName){
+export function serverAuthSetup(projectPath,config,projectName, installDeps){
   try {
     const serverDir = path.join(projectPath, "server");
     
@@ -668,10 +670,12 @@ export function serverAuthSetup(projectPath,config,projectName){
         shell: true
       });
     } catch (error) {
-      logger.info()
+      logger.info("✅ Server directory created successfully!");
     }
 
-    installDependencies(projectPath,config,projectName,true,["bcrypt","jsonwebtoken","cookie-parser","dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
+    if (installDeps) {
+      installDependencies(projectPath,config,projectName,true,["bcrypt","jsonwebtoken","cookie-parser","dotenv","express","helmet","mongoose","cors","nodemon","morgan"])
+    }
 
   } catch (error) {
     logger.error("❌ Failed to set up server auth");
