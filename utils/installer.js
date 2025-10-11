@@ -50,8 +50,9 @@ export function angularSetup(projectPath, config, projectName) {
       shell: true, 
     });
 
+    serverSetup(projectPath,config,projectName);
     logger.info("✅ Angular project created successfully!");
-    // Server setup is now handled separately in project.js
+    
     return true;
   } catch (error) {
     logger.error("❌ Failed to set up Angular");
@@ -422,10 +423,9 @@ export function mevnSetup(projectPath,config,projectName){
 
     fs.writeFileSync(vueJsPath, vueJsPathContent, "utf-8");
     
-    // serverSetup(projectPath,config,projectName);
     logger.info("✅ MEVN project created successfully!");
+    serverSetup(projectPath,config,projectName);
 
-    return true
   } catch (error) {
     logger.error("❌ Failed to set up MEVN");
     throw error;
@@ -578,6 +578,8 @@ export function serverSetup(projectPath,config,projectName){
       stdio: 'ignore',  // Suppress output
       shell: true
     });
+
+    installDependencies(projectPath,config,projectName,true,["express","dotenv","mongoose","nodemon","cors","helmet","express-rate-limit"])
 
   }catch(error){
     logger.error("❌ Failed to set up server");

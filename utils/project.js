@@ -43,32 +43,32 @@ export async function setupProject(projectName, config) {
     installDependencies(projectPath, config, projectName,false,[])
   }
 
-  if(config.stack === 'mevn'){
+  else if(config.stack === 'mevn'){
     mevnSetup(projectPath,config,projectName)
     copyTemplates(projectPath,config)
     installDependencies(projectPath,config,projectName,false,[])
   }
 
-  if(config.stack === "mean"){
+  else if(config.stack === "mean"){
     angularSetup(projectPath, config, projectName);
     copyTemplates(projectPath, config);
     installDependencies(projectPath, config, projectName); 
   }
 
-  if(config.stack==="mern+tailwind+auth"){
+  else if(config.stack==="mern+tailwind+auth"){
     await mernSetup(projectPath, config, projectName);
     await copyTemplates(projectPath, config);
     await mernTailwindSetup(projectPath, config, projectName);
     await serverAuthSetup(projectPath, config, projectName);
   }
 
-  if(config.stack === 'mevn+tailwind+auth'){
+  else if(config.stack === 'mevn+tailwind+auth'){
     await mevnTailwindAuthSetup(projectPath, config, projectName);
     await copyTemplates(projectPath, config);
     await serverAuthSetup(projectPath, config,projectName)
   }
 
-  if(config.stack === "mean+tailwind+auth"){
+  else if(config.stack === "mean+tailwind+auth"){
     angularTailwindSetup(projectPath, config, projectName);
     copyTemplates(projectPath, config);
     installDependencies(projectPath, config, projectName);
@@ -76,13 +76,13 @@ export async function setupProject(projectName, config) {
   }
 
 
-  if(config.stack === "react+tailwind+firebase"){
+  else if(config.stack === "react+tailwind+firebase"){
     copyTemplates(projectPath, config);
     installDependencies(projectPath, config, projectName);
   }
 
   
-  if(config.stack === "hono"){
+  else if(config.stack === "hono"){
    try{
      HonoReactSetup(projectPath,config,projectName);
      copyTemplates(projectPath, config);
@@ -93,7 +93,7 @@ export async function setupProject(projectName, config) {
     }
   }
 
-  if(config.stack==='t3-stack'){
+  else if(config.stack==='t3-stack'){
     try {
       // Copy template files
       copyTemplates(projectPath, config, projectName);
