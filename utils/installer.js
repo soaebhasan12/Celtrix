@@ -577,7 +577,7 @@ export function mevnTailwindAuthSetup(projectPath, config, projectName) {
       scriptPathContent = fs.readFileSync(scriptPath, "utf-8");
     } catch (error) {
       logger.error(`❌ Failed to read Vue component: ${error.message}`);
-      throw error;
+      return;
     }
 
     // Replace or inject content inside <script setup lang="ts">
