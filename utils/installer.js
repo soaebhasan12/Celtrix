@@ -39,7 +39,7 @@ export function installDependencies(projectPath, config, projectName, server = t
 }
 
 
-export function angularSetup(projectPath, config, projectName, installDeps = true) {
+export function angularSetup(projectPath, config, projectName, installDeps) {
   logger.info("⚡ Setting up Angular...");
 
   try {
@@ -109,7 +109,7 @@ export function angularTailwindSetup(projectPath, config, projectName) {
 }
 
 
-export function HonoReactSetup(projectPath, config, projectName, installDeps = true) {
+export function HonoReactSetup(projectPath, config, projectName, installDeps) {
   logger.info("⚡ Setting up Hono+ React...");
 
   try {
@@ -145,7 +145,7 @@ export function HonoReactSetup(projectPath, config, projectName, installDeps = t
   }
 }
 
-export function mernSetup(projectPath, config, projectName, installDeps = true) {
+export function mernSetup(projectPath, config, projectName, installDeps) {
   logger.info("⚡ Setting up MERN...");
 
   try {
@@ -386,7 +386,7 @@ export function mernTailwindSetup(projectPath, config, projectName) {
 }
 
 
-export function mevnSetup(projectPath, config, projectName, installDeps = true) {
+export function mevnSetup(projectPath, config, projectName, installDeps) {
   try {
     logger.info("⚡ Setting up MEVN...");
     if (config.language == 'javascript') {
@@ -485,7 +485,7 @@ export function mevnSetup(projectPath, config, projectName, installDeps = true) 
   }
 }
 
-export function mevnTailwindAuthSetup(projectPath, config, projectName, installDeps = true) {
+export function mevnTailwindAuthSetup(projectPath, config, projectName, installDeps) {
   logger.info("⚡ Setting up MEVN + Tailwind + Auth...");
 
   try {
@@ -627,7 +627,7 @@ export function mevnTailwindAuthSetup(projectPath, config, projectName, installD
   }
 }
 
-export function serverSetup(projectPath, config, projectName, installDeps = true) {
+export function serverSetup(projectPath, config, projectName, installDeps) {
   try {
     const serverDir = path.join(projectPath, "server");
 
@@ -653,7 +653,7 @@ export function serverSetup(projectPath, config, projectName, installDeps = true
   }
 }
 
-export function serverAuthSetup(projectPath, config, projectName, installDeps = true) {
+export function serverAuthSetup(projectPath, config, projectName, installDeps) {
   try {
     const serverDir = path.join(projectPath, "server");
 
