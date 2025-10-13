@@ -28,6 +28,15 @@ export function copyTemplates(projectPath, config) {
       break;
     }
     
+    case 't3-stack': {
+      const clientPath = path.join(projectPath, 't3-app');
+      const frontendTemplate = path.join(__dirname, '..', 'templates', stack, 't3-app');
+      
+      logger.info('📂 Copying template files...');
+      fs.copySync(frontendTemplate, clientPath);
+      break;
+    }
+    
     case 'react+tailwind+firebase': {
       const clientPath = path.join(projectPath, 'client');
       const frontendTemplate = path.join(
