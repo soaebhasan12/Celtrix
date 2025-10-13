@@ -73,9 +73,9 @@ async function askStackQuestions() {
         },
         {
           name:
-            chalk.whiteBright.bold("⚡ Next.js (T3 Stack)") +
-            chalk.gray(" → tRPC + Prisma + Tailwind + Auth"),
-          value: "t3-stack",
+            chalk.whiteBright.bold("⚡ Next.js") +
+            chalk.gray(" → vanilla modern stack"),
+          value: "nextjs",
         },
         {
           name:
