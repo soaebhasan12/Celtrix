@@ -195,8 +195,18 @@ async function main() {
     const stackAnswers = await askStackQuestions();
     config = { ...stackAnswers, projectName };
 
+    // Ask whether to install dependencies (handled in main script)
+    const { installDeps } = await inquirer.prompt([
+      {
+        type: "confirm",
+        name: "installDeps",
+        message: "Do you want to install dependencies?",
+        default: true,
+      },
+    ]);
+
     console.log(chalk.yellow("\n🚀 Creating your project...\n"));
-    await createProject(projectName, config);
+    await createProject(projectName, config, installDeps);
 
   } catch (err) {
     console.log(chalk.red("❌ Error:"), err.message);
