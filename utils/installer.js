@@ -651,6 +651,44 @@ export function serverSetup(projectPath,config,projectName){
   }
 }
 
+
+
+export function nextSetup(projectPath, config, projectName) {
+  try {
+    if (config.language === "typescript") {
+      console.log("⚡ Setting up Next.js with TypeScript...");
+      execSync(`npx create-next-app@latest . \
+            --typescript \
+            --eslint \
+            --tailwind \
+            --src-dir \
+            --app \
+            --no-turbo \
+            --import-alias="@/*" \
+            --yes`, 
+      {
+        cwd: projectPath,
+        stdio: "inherit",
+        shell: true
+      });
+    } else if (config.language === "javascript") {
+      logger.info("⚡ Setting up Next.js with JavaScript...");
+      execSync(`npx create-next-app@latest . --eslint --tailwind --src-dir --app --turbo --import-alias @/* --yes`, {
+        cwd: projectPath,
+        stdio: "inherit",
+        shell: true
+      });
+    } else {
+      throw new Error("Invalid language option. Choose 'javascript' or 'typescript'.");
+    }
+
+    console.log("✅ Next.js project setup completed!");
+  } catch (err) {
+    console.error("❌ Error setting up Next.js:", err);
+  }
+}
+
+
 export function serverAuthSetup(projectPath,config,projectName){
   try {
     const serverDir = path.join(projectPath, "server");
