@@ -4,7 +4,7 @@ import chalk from "chalk";
 import boxen from "boxen";
 import { logger } from "./logger.js";
 import { copyTemplates } from "./templateManager.js";
-import { HonoReactSetup, mernTailwindSetup, installDependencies, mernSetup, serverAuthSetup, serverSetup, mevnSetup, mevnTailwindAuthSetup } from "./installer.js";
+import { HonoReactSetup,mernTailwindSetup, installDependencies, mernSetup, serverAuthSetup, serverSetup, mevnSetup, mevnTailwindAuthSetup, nextSetup } from "./installer.js";
 import { angularSetup, angularTailwindSetup } from "./installer.js";
 
 export async function setupProject(projectName, config, installDeps) {
@@ -94,17 +94,12 @@ export async function setupProject(projectName, config, installDeps) {
     }
   }
 
-  else if (config.stack === 't3-stack') {
+  else if (config.stack === 'nextjs') {
     try {
-      // Copy template files
-      copyTemplates(projectPath, config, projectName);
-
-      // Install all dependencies (both client and server)
-      if (installDeps) installDependencies(projectPath, config, projectName);
-
-      logger.info("✅ T3 stack project created successfully!");
+       nextSetup(projectPath,config,projectName);
+      logger.info("✅ Next.js project created successfully!");
     } catch (error) {
-      logger.error("❌ Failed to set up T3 stack");
+      logger.error("❌ Failed to set up Next.js");
       logger.error(error.message);
       throw error;
     }
@@ -119,8 +114,8 @@ export async function setupProject(projectName, config, installDeps) {
   if (config.stack === "mean" || config.stack === "mean+tailwind+auth") {
     console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("npm start")}`);
     console.log(`   ${chalk.yellow("cd")} ${projectName}/server && ${chalk.green("npm start")}`);
-  } else if (config.stack === "t3-stack") {
-    console.log(`   ${chalk.yellow("cd")} ${projectName}/t3-app && ${chalk.green("npm run dev")}`);
+  } else if (config.stack === "nextjs") {
+    console.log(`   ${chalk.yellow("cd")} ${projectName} && ${chalk.green("npm run dev")}`);
 
   } else if (config.stack === "react+tailwind+firebase") {
     console.log(`   ${chalk.yellow("cd")} ${projectName}/client && ${chalk.green("npm run dev")}`);
