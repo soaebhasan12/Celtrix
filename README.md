@@ -1,6 +1,6 @@
 <div style="text-align: center">
   <p align="center">
-<img width="500" height="200" alt="Celtrix" src="https://github.com/user-attachments/assets/96981ed5-1788-4262-8d82-6de0afc90dfe" />
+    <img width="200" height="300" alt="celtrix-trans" src="https://github.com/user-attachments/assets/890f44c4-4d23-4026-89cf-570706768f9c" />
     <br><br>
     <i>Setup web apps in seconds, not hours, with your preferred stack.</i>
   </p>
@@ -17,19 +17,21 @@
 
 # Features
 
-### **Multiple Stack Options**
-Choose from **7+ popular stacks** including MERN, MEAN, T3, Angular+Tailwind, and more!
+
+## **Multiple Stack Options**
 
 <div align="center">
-  <img width="617" height="511" alt="cel-1" src="https://github.com/user-attachments/assets/5958e7b2-34b8-4821-839f-fa73b327af82" />
+  <img width="617" height="456" alt="Screenshot 2025-10-14 150611" src="https://github.com/user-attachments/assets/dd8901a1-c978-41cb-ba79-116f42ffe0d5" />
 </div>
 
-### **Language Flexibility**
-Pick your preferred programming languages and frameworks to match your workflow.
+  
+## **Language Flexibility**
 
 <div align="center">
-<img width="674" height="478" alt="Screenshot 2025-10-09 154909" src="https://github.com/user-attachments/assets/ca760580-89af-462d-abd9-5a53e272f321" />
+  <img width="595" height="440" alt="Screenshot 2025-10-14 150639" src="https://github.com/user-attachments/assets/66af685d-888a-467e-8eb8-b627c57a85cd" />
 </div>
+
+<hr/>
 
 ### **Ready-to-Go Setup**
 -  **ESLint** configuration included
@@ -45,7 +47,7 @@ Pick your preferred programming languages and frameworks to match your workflow.
 No global installation needed! Get started instantly:
 
 ```bash
-npx celtrix my-awesome-app
+npx celtrix my-app
 ```
 
 That's it! Follow the interactive prompts to customize your project.
