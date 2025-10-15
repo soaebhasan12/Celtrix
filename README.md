@@ -1,8 +1,8 @@
 <div style="text-align: center">
   <p align="center">
-    <img width="200" height="300" alt="celtrix-trans" src="https://github.com/user-attachments/assets/890f44c4-4d23-4026-89cf-570706768f9c" />
+    <img width="3144" height="1056" alt="lop" src="https://github.com/user-attachments/assets/2a784007-1f76-4c9e-b8be-fd1bdc3c09c6" />
     <br><br>
-    <i>Setup web apps in seconds, not hours, with your preferred stack.</i>
+   <i> Celtrix is a modern web-app scaffolder where you can Setup web apps in seconds, not hours, with your preferred stack.</i>
   </p>
 </div>
 <div align="center">
@@ -15,23 +15,20 @@
   
 </div>
 
+
 # Features
 
 
-## **Multiple Stack Options**
+### **Multiple Stack Options**
+- Run ```npx celtrix``` to instantly create projects with your favorite stack.
+- Choose from **MERN, MEAN, MEVN, Next.js, or Hono setups**.
+- Choose your own **preferred language**.
+- Includes ready-made variants like Tailwind + Auth or Firebase integration.
+- Simple, colorful, and interactive terminal experience.
+- Built for developers who want fast, clean, and modern project scaffolding.
 
-<div align="center">
-  <img width="617" height="456" alt="Screenshot 2025-10-14 150611" src="https://github.com/user-attachments/assets/dd8901a1-c978-41cb-ba79-116f42ffe0d5" />
-</div>
 
-  
-## **Language Flexibility**
-
-<div align="center">
-  <img width="595" height="440" alt="Screenshot 2025-10-14 150639" src="https://github.com/user-attachments/assets/66af685d-888a-467e-8eb8-b627c57a85cd" />
-</div>
-
-<hr/>
+---
 
 ### **Ready-to-Go Setup**
 -  **ESLint** configuration included
@@ -42,7 +39,7 @@
 
 ---
 
-## Quick Start
+# Quick Start
 
 No global installation needed! Get started instantly:
 
@@ -54,13 +51,13 @@ That's it! Follow the interactive prompts to customize your project.
 
 ---
 
-## FAQ
+# FAQ
 
 You can now find the full list of FAQs here: [FAQ.md](./FAQ.md)
 
 ---
 
-## What You Get
+# What You Get
 
 - **Production-ready** project structure
 - **Modern tooling** and best practices
@@ -70,7 +67,7 @@ You can now find the full list of FAQs here: [FAQ.md](./FAQ.md)
 
 ---
 
-## ⭐ Star History
+# ⭐ Star History
 
 <div align="center">
   <h3>📈 Watch our journey grow!</h3>
@@ -91,11 +88,11 @@ You can now find the full list of FAQs here: [FAQ.md](./FAQ.md)
 
 ---
 
-## Contributing
+# Contributing
 
 We love contributions! Please feel free to:
 
-- 🐛 Report bugs
+- 🐞 Report bugs
 - 💡 Suggest new features
 - 🔧 Submit pull requests
 - ⭐ Star this repository
@@ -103,7 +100,7 @@ We love contributions! Please feel free to:
 Check out [CONTRIBUTING](https://github.com/celtrix-os/Celtrix/blob/main/CONTRIBUTING.md) to see how to contribute to Celtrix.
 
 ---
-## Our Contributors
+# Our Contributors
 
 Thanks goes to these wonderful people:  
 
