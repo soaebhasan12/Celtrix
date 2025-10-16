@@ -152,13 +152,13 @@ export function mernSetup(projectPath, config, projectName, installDeps) {
     // 1. Create MERN project
     if (config.language === "typescript") {
 
-      execSync(`npm create vite@latest client -- --t react-ts --no-rolldown --no-interactive `, {
+      execSync(`${config.packageManager} create ${config.packageManager == "npm" ? "vite@latest" : "vite"} client ${config.packageManager == "npm" ? "--" : ""} --t react-ts --no-rolldown --no-interactive `, {
         cwd: projectPath,
         stdio: "inherit",
         shell: true,
       });
     } else {
-      execSync(`npm create vite@latest client -- --t react --no-rolldown --no-interactive `, {
+      execSync(`${config.packageManager} create ${config.packageManager == "npm" ? "vite@latest" : "vite"} client ${config.packageManager == "npm" ? "--" : ""} --t react --no-rolldown --no-interactive `, {
         cwd: projectPath,
         stdio: "inherit",
         shell: true,
