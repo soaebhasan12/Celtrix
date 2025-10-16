@@ -217,7 +217,7 @@ async function main() {
   let config;
 
   try {
-    let packageManger = detectPackageManager();
+    let packageManager = detectPackageManager();
 
     if (!projectName) {
       projectName = await askProjectName();
@@ -226,10 +226,10 @@ async function main() {
     
     // Handle package manager flag
     if (args.includes('--package-manager') || args.includes('-p')) {
-      packageManger = (await askPackageManager()).packageManager;
+      packageManager = (await askPackageManager()).packageManager;
     }
 
-    config = { ...stackAnswers, projectName, packageManger };
+    config = { ...stackAnswers, projectName, packageManager };
 
     // Ask whether to install dependencies (handled in main script)
     const { installDeps } = await inquirer.prompt([
