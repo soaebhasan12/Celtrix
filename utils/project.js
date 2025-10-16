@@ -22,6 +22,7 @@ export async function setupProject(projectName, config, installDeps) {
     ${chalk.bold("🌐 Stack:")}  ${chalk.green(config.stack)}
     ${chalk.bold("📦 Project Name:")}  ${chalk.blue(projectName)}
     ${chalk.bold("📖 Language:")}  ${chalk.red(config.language)}
+    ${chalk.bold("📦 Package Manager")}  ${chalk.magenta(config.packageManager)}
     `;
 
   console.log(
