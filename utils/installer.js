@@ -10,7 +10,7 @@ export function installDependencies(projectPath, config, projectName, server = t
       const t3AppDir = path.join(projectPath, 't3-app');
       if (fs.existsSync(t3AppDir)) {
         logger.info("📦 Installing T3 stack dependencies...");
-        execSync("npm install", { cwd: t3AppDir, stdio: "inherit", shell: true });
+        execSync(`${config.packageManager} install`, { cwd: t3AppDir, stdio: "inherit", shell: true });
         logger.info("✅ T3 stack dependencies installed successfully");
         return;
       }
@@ -22,12 +22,12 @@ export function installDependencies(projectPath, config, projectName, server = t
 
     if (fs.existsSync(clientDir)) {
       logger.info("📦 Installing Frontend dependencies...");
-      execSync("npm install", { cwd: clientDir, stdio: "inherit", shell: true });
+      execSync(`${config.packageManager} install`, { cwd: clientDir, stdio: "inherit", shell: true });
     }
 
     if (server && fs.existsSync(serverDir)) {
       logger.info("📦 Installing Backend dependencies...");
-      execSync("npm install " + dependencies.join(" "), { cwd: serverDir, stdio: "inherit", shell: true });
+      execSync(`${config.packageManager} ${config.packageManager == "npm" ? "install" : "add"} ` + dependencies.join(" "), { cwd: serverDir, stdio: "inherit", shell: true });
     }
 
     logger.info("✅ Dependencies installed successfully");
@@ -74,7 +74,7 @@ export function angularTailwindSetup(projectPath, config, projectName) {
     const clientPath = path.join(projectPath, "client");
 
     // 2. Install Tailwind + PostCSS
-    execSync(`npm install tailwindcss @tailwindcss/postcss postcss --force`, {
+    execSync(`${config.packageManager} ${config.packageManager == "npm" ? "install" : "add"} tailwindcss @tailwindcss/postcss postcss --force`, {
       cwd: clientPath,
       stdio: "inherit",
       shell: true,
@@ -340,7 +340,7 @@ export function mernSetup(projectPath, config, projectName, installDeps) {
 
 export function mernTailwindSetup(projectPath, config, projectName) {
   try {
-    execSync(`npm install tailwindcss @tailwindcss/vite`, { cwd: path.join(projectPath, "client") });
+    execSync(`${config.packageManager} ${config.packageManager == "npm" ? "install" : "add"} tailwindcss @tailwindcss/vite`, { cwd: path.join(projectPath, "client") });
 
     let isJs = config.language === 'javascript';
     const viteConfigPath = isJs
@@ -510,7 +510,7 @@ export function mevnTailwindAuthSetup(projectPath, config, projectName, installD
     const clientPath = path.join(projectPath, "client");
 
     // 2. Install Tailwind plugin for Vite in client
-    execSync(`npm install tailwindcss @tailwindcss/vite`, {
+    execSync(`${config.packageManager} ${config.packageManager == "npm" ? "install" : "add"} tailwindcss @tailwindcss/vite`, {
       cwd: clientPath,
       stdio: "inherit",
       shell: true,
