@@ -197,8 +197,13 @@ function showHelp() {
 }
 
 async function main() {
-  const args = process.argv.slice(2);
-
+  let packageManager = detectPackageManager();
+  let args;
+  if(packageManager == "npm" || packageManager == "bun") {
+    args = process.argv.slice(2);
+  } else {
+    args = process.argv.slice(3);
+  }  
   // Handle version flag
   if (args.includes('--version') || args.includes('-v')) {
     showVersion();
@@ -217,7 +222,6 @@ async function main() {
   let config;
 
   try {
-    let packageManager = detectPackageManager();
 
     if (!projectName) {
       projectName = await askProjectName();
