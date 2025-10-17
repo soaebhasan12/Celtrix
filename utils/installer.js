@@ -390,12 +390,12 @@ export function mevnSetup(projectPath, config, projectName, installDeps) {
   try {
     logger.info("⚡ Setting up MEVN...");
     if (config.language == 'javascript') {
-      execSync(`npm create vite@latest client -- --t vue --no-rolldown --no-interactive`, { cwd: projectPath, stdio: "inherit", shell: true });
+      execSync(`${config.packageManager} create ${config.packageManager == "npm" ? "vite@latest" : "vite"} client ${config.packageManager == "npm" ? "--" : ""} --t vue --no-rolldown --no-interactive`, { cwd: projectPath, stdio: "inherit", shell: true });
 
 
     }
     else {
-      execSync(`npm create vite@latest client -- --t vue-ts --no-rolldown --no-interactive`, { cwd: projectPath, stdio: "inherit", shell: true });
+      execSync(`${config.packageManager} create ${config.packageManager == "npm" ? "vite@latest" : "vite"} client ${config.packageManager == "npm" ? "--" : ""} --t vue-ts --no-rolldown --no-interactive`, { cwd: projectPath, stdio: "inherit", shell: true });
     }
 
 
@@ -492,7 +492,7 @@ export function mevnTailwindAuthSetup(projectPath, config, projectName, installD
     // 1. Create Vue client with Vite (js / ts)
     if (config.language === 'javascript') {
 
-      execSync(`npm create vite@latest client -- --t vue --no-rolldown --no-interactive`, {
+      execSync(`${config.packageManager} create ${config.packageManager == "npm" ? "vite@latest" : "vite"} client ${config.packageManager == "npm" ? "--" : ""} --t vue --no-rolldown --no-interactive`, {
         cwd: projectPath,
         stdio: "inherit",
         shell: true,
@@ -500,7 +500,7 @@ export function mevnTailwindAuthSetup(projectPath, config, projectName, installD
     }
 
     else {
-      execSync(`npm create vite@latest client -- --t vue-ts --no-rolldown --no-interactive`, {
+      execSync(`${config.packageManager} create ${config.packageManager == "npm" ? "vite@latest" : "vite"} client ${config.packageManager == "npm" ? "--" : ""} --t vue-ts --no-rolldown --no-interactive`, {
         cwd: projectPath,
         stdio: "inherit",
         shell: true,
