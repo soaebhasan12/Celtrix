@@ -629,9 +629,24 @@ export function mevnTailwindAuthSetup(projectPath, config, projectName, installD
 
 export function nextSetup(projectPath, config, projectName) {
   try {
+    // next command based on package manager
+    function nextCommand() {
+      switch (config.packageManager) {
+        case "npm":
+          return "npx create-next-app@latest";
+        case "pnpm":
+          return "pnpm dlx create-next-app@latest";
+        case "yarn":
+          return "yarn dlx create-next-app@latest";
+        case "bun":
+          return "bunx create-next-app@latest";
+        default:
+          return "npx create-next-app@latest";  
+      }
+    }
     if (config.language === "typescript") {
       console.log("⚡ Setting up Next.js with TypeScript...");
-      execSync(`npx create-next-app@latest . \
+      execSync(`${nextCommand()} . \
             --typescript \
             --eslint \
             --tailwind \
@@ -647,7 +662,7 @@ export function nextSetup(projectPath, config, projectName) {
       });
     } else if (config.language === "javascript") {
       logger.info("⚡ Setting up Next.js with JavaScript...");
-      execSync(`npx create-next-app@latest . --eslint --tailwind --src-dir --app --turbo --import-alias @/* --yes`, {
+      execSync(`${nextCommand()} . --eslint --tailwind --src-dir --app --turbo --import-alias @/* --yes`, {
         cwd: projectPath,
         stdio: "inherit",
         shell: true
