@@ -228,10 +228,8 @@ async function main() {
     }
     const stackAnswers = await askStackQuestions();
     
-    // Handle package manager flag
-    if (args.includes('--package-manager') || args.includes('-p')) {
-      packageManager = (await askPackageManager()).packageManager;
-    }
+    packageManager = (await askPackageManager()).packageManager;
+    
 
     config = { ...stackAnswers, projectName, packageManager };
 
