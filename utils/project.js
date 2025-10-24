@@ -116,16 +116,16 @@ export async function setupProject(projectName, config, installDeps) {
   const cmd = (script) => {
     switch (config.packageManager) {
       case "yarn":
-        return `yarn ${script}`;
+        return `yarn ${script == "dev" ? "dev" : "node server.js"}`;
       case "pnpm":
         // pnpm supports both `pnpm run <script>` and `pnpm <script>`. Use run for clarity
-        return script === "dev" ? "pnpm run dev" : "pnpm start";
+        return script === "dev" ? "pnpm run dev" : "pnpm node server.js";
       case "bun":
         // use `bun run <script>` for consistency
-        return `bun run ${script}`;
+        return `bun ${script == "dev" ? "run dev" : "server.js"}`;
       case "npm":
       default:
-        return script === "dev" ? "npm run dev" : "npm start";
+        return script === "dev" ? "npm run dev" : "node index.js";
     }
   };
 
